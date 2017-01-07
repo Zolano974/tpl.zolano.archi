@@ -1,0 +1,26 @@
+{
+  "name": "sytest",
+  "dependencies": {
+    "jquery": "latest",
+    "jquery-ui": "latest",
+    "bootstrap": "latest",
+    "amcharts": "latest",
+    "datatables.net": "latest",
+    "datatables.net-bs": "latest",
+    "farbtastic": "latest",
+    "bootstrap-datepicker": "latest"
+  },
+  "homepage": "https://github.com/Zolano974/tplv2",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/FirstBundle/Resources/public/lib/",
+    "test",
+    "tests"
+  ]
+}

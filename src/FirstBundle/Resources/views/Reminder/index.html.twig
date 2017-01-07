@@ -1,0 +1,47 @@
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block content %}
+    <h1>Reminders list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Userid</th>
+                <th>Worksetid</th>
+                <th>Xcoord</th>
+                <th>Ycoord</th>
+                <th>Text</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reminder in reminders %}
+            <tr>
+                <td><a href="{{ path('reminder_show', { 'id': reminder.id }) }}">{{ reminder.id }}</a></td>
+                <td>{{ reminder.userId }}</td>
+                <td>{{ reminder.worksetId }}</td>
+                <td>{{ reminder.xCoord }}</td>
+                <td>{{ reminder.yCoord }}</td>
+                <td>{{ reminder.text }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('reminder_show', { 'id': reminder.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('reminder_edit', { 'id': reminder.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('reminder_new') }}">Create a new reminder</a>
+        </li>
+    </ul>
+{% endblock %}

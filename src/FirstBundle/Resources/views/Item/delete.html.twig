@@ -1,0 +1,35 @@
+{# Item/Delete #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    Delete Field
+    
+{% endblock  %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-12">
+            <h2 class="danger">
+
+                You sure you want to Delete Item ?
+            </h2>
+            <h3>All data for this field will be lost</h3>
+        </div>
+
+    </div>
+    <div class="row">
+        
+        <div class="col-md-12">
+            <form role="form" method="POST">
+                <input type="hidden" id="delete_id" name="delete_id" value="{{ id }}"/>
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+           </form>
+        </div>
+
+    </div>
+</div>
+{% endblock  %}
+

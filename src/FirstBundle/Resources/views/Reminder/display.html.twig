@@ -1,0 +1,187 @@
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    Penses Bêtes
+
+{% endblock  %}
+
+{% block content %}
+    <div class="container">
+
+
+        <div class="row">
+            {% for x in xcoords %}
+                {% for y in ycoords %}
+                    {% set reminder = matrix[x][y] %}
+                    <div class="col-xs-4 reminder">
+
+                        {% set css_class = " bookmark bookmark-shadow" %}
+                        {% set placeholder = "Ecrire une nouvelle note" %}
+                        {% set shadow = true %}
+
+                        {% if reminder.text != "" %}
+                            {% set css_class = "bookmark bookmark-filled" %}
+                            {% set placeholder = "" %}
+                            {% set shadow = false %}
+                        {% endif %}
+
+                        <div id="bookmark-{{ x }}-{{ y }}" class="{{ css_class }}" >
+                            {% if shadow == false %}
+
+                                {#<div class="row">#}
+                                    {#<div class="col-xs-1 col-md-offset-9">#}
+                                        {#<span class="glyphicon glyphicon-eye-open"></span>#}
+                                    {#</div>#}
+                                    {#<div class="col-xs-1 ">#}
+                                        {#<span class="glyphicon glyphicon-remove"></span>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {% endif %}
+                            {#<div class="row">#}
+                                {#<div class="col-xs-12">#}
+
+                                        <p >
+                                            {% if shadow == false %}
+                                                {{ reminder.text | raw }}
+                                            {% endif %}
+                                        </p>
+
+                                    <textarea id="text-{{ x }}-{{ y }}" text="" class="reminder-textarea" style="display:none"></textarea>
+                                {#</div>#}
+                            {#</div>#}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+{% endblock  %}
+
+
+{% block js_scripts %}
+
+
+    <script type="text/javascript">
+
+        /**
+         * Convertit les retours chariots js en <br />
+         * @returns {string}
+         */
+        var nl2br = function(text){
+            return text.replace(/(\n)/g, '<br>');
+        };
+
+        /**
+         * Convertit les retours chariots js en <br />
+         * @returns {string}
+         */
+        var br2nl = function(text){
+            return text.replace(/(<br>)/g, "\n");
+        };
+
+        /**
+         * récupère les coordonnéesmatricielles et envoie une appel ajax pour update le texte
+         * @param html_id
+         * @param newtext
+         */
+        var updateReminderText = function(html_id, newtext){
+
+            //on recupere les coord X et Y contenues dans lid html
+            var px = html_id.split('-')[1];
+            var py = html_id.split('-')[2];
+
+            //on appelle la fonction en ajax qui set le texte d'un reminder
+            $.post(
+                    '{{ path('reminder_set_text', {'workset_id' : workset_id}) }}',
+                    {
+                        x : px,
+                        y : py,
+                        text : newtext
+                    }
+            )
+            .done(function(data){
+                console.log(data);
+            });
+        };
+
+        /**
+         * Cache l'affichage du texte et ouvre la textarea
+         * @param html_id
+         */
+        var setWriteMode = function(html_id){
+            //on récupère le texte
+            var text =  $("#"+html_id).find('p').html();
+            if(text === undefined || text === ""){
+                console.log('write change class to shadow');
+                $("#"+html_id).attr('class','bookmark bookmark-shadow');
+                text = "";
+            }
+
+
+            $("#"+html_id).find('p').hide();
+            $("#"+html_id).find('textarea').val(br2nl(text).trim());
+            $("#"+html_id).find('textarea').show();
+            $("#"+html_id).find('textarea').focus();
+        };
+
+        /**
+         * Cache l'affichage du texte et ouvre la textarea
+         * @param html_id
+         */
+        var setDisplayMode = function(html_id){
+
+            //on récupère le texte
+            var text =  $("#"+html_id).find('textarea').val();
+            if(text === undefined || text === ""){
+                text = "";
+                //on ajutse la classe en fonction
+                $("#"+html_id).attr('class','bookmark bookmark-shadow');
+            }
+            else{
+                $("#"+html_id).attr('class','bookmark bookmark-filled');
+            }
+//            console.log(text);
+            $("#"+html_id).find('textarea').hide();
+            $("#"+html_id).find('p').html(nl2br(text));
+            $("#"+html_id).find('p').show();
+        };
+
+
+        $(document).ready(function(){
+
+            //quand un textarea est quitté
+            $('.reminder-textarea').on('blur', function(e){
+
+                console.log("blur");
+
+                //on recupere le text saisi
+                var text = $("#"+this.id).val();
+
+                //on met à jour le contenu en BDD en ajax
+                updateReminderText(this.id, nl2br(text));
+                //on met a jour la vue
+                setDisplayMode(this.parentNode.id);
+
+            });
+
+            //quand un reminder existant est clické
+            $('.bookmark').on('click', function(e){
+                //on passe en mode edition
+                setWriteMode(this.id);
+            });
+
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+{% endblock  %}

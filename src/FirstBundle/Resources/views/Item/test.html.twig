@@ -1,0 +1,82 @@
+{# Item/Index #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    Item TEST
+    
+{% endblock  %}
+
+{% block content %}
+<div class="container">
+    <h1>TEST de graphing des fields </h1>
+
+                    <!-- Graphique -->
+                <div class="row">
+
+
+                        <div id="graph" class="push_top">
+                            <div id="chartdiv" style="min-height:500px;">
+
+                            </div>
+                        </div>       
+
+
+                    <!--</div>--> 
+                </div>
+
+</div>
+{% endblock  %}
+
+{% block js_scripts %}
+       
+{#    ON POSE UNE DATATABLE SUR LA LISTE#}
+
+        <script type="text/javascript">
+           $(document).ready(function(){
+               
+                //on récupère les données JSON envoyées par le Controller
+                var chart_params = {{chart_params | json_encode | raw}};
+                var chart_data = {{chart_data | json_encode | raw }};
+
+                console.log(chart_data);
+                console.log(chart_params);
+                
+                //on crée l'objet chart avec les paramètres contenus dans la réponse ajax
+                var chart = AmCharts.makeChart("chartdiv", chart_params);   
+                
+                //on donne les données à afficher au chart, après la moulinette de mise en forme
+                chart.dataProvider = generateChartData(chart_data);
+                
+                chart.validateData();
+                
+                //on zoom sur l'échelle globale du graphe
+                zoomChart(chart); 
+                
+                // on set les bornes du graph aus bornes temporelles définies par les données a l'initialisation
+                function zoomChart() {
+                    chart.zoomToIndexes(0, chart.dataProvider.length -1);
+                }    
+           });
+           
+            //fonction qui formatte les données de manière à pouvoir les injecter directement dans amcharts
+            function generateChartData(json_data){
+                //on instancie la variable chartData 
+                var chartData = [];
+
+                //on récupère la partie de la réponse AJAX qui correspond aux données du graphe
+{#                var json_data = JSON.parse(amchart_json_data);#}
+                //on constitue le tableau de données avec les bons formats pour amcharts
+                $.each(json_data, function(i,item){
+                    item.date = new Date(item.date);
+                    chartData.push(item);
+                });         
+                
+                return chartData;
+            }      
+            
+        </script>   
+        
+  
+
+{% endblock  %}

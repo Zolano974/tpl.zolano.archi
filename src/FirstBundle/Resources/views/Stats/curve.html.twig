@@ -1,0 +1,126 @@
+{# Item/Index #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    Statistiques
+
+{% endblock  %}
+
+{% block content %}
+
+    <h1>Statistiques d'avancement</h1>
+
+    <div class="row">
+
+        <div class="col-xs-10 cl-xs-offset-1">
+
+        </div>
+    </div>
+    <!-- Graphique -->
+    <div class="row graph-container">
+
+
+        <div class="panel col-xs-12 col-md-12 col-lg-6">
+            <div class="row">
+                <label>Avancement des items cochés</label>
+            </div>
+            <div class="row">
+                <div id="graph" class="push_top">
+                    <div id="chartdiv_done" class="chartdiv" >
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel col-xs-12 col-md-12 col-lg-6">
+            <div class="row">
+                <label>Avancement des items mikbookés</label>
+            </div>
+            <div class="row">
+                <div id="graph" class="push_top">
+                    <div id="chartdiv_mkb" class="chartdiv">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!--</div>-->
+    </div>
+{% endblock  %}
+
+{% block js_scripts %}
+
+    {#    ON POSE UNE DATATABLE SUR LA LISTE#}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            //on récupère les données JSON envoyées par le Controller
+            var chart_params_done = {{chart_params_done | json_encode | raw}};
+            var chart_data_done = {{chart_data_done | json_encode | raw }};
+            var chart_params_mkb= {{chart_params_mkb | json_encode | raw}};
+            var chart_data_mkb = {{chart_data_mkb | json_encode | raw }};
+
+            console.log(chart_data_done);
+            console.log(chart_params_done);
+
+
+            //CONTRUCTION DU GRAPHE POUR LES ITEMS DONE
+                //on crée l'objet chart avec les paramètres contenus dans la réponse ajax
+                var chart_done= AmCharts.makeChart("chartdiv_done", chart_params_done);
+
+                //on donne les données à afficher au chart, après la moulinette de mise en forme
+                chart_done.dataProvider = generateChartData(chart_data_done);
+
+                chart_done.validateData();
+
+                //on zoom sur l'échelle globale du graphe
+                zoomChart(chart_done);
+
+            //CONTRUCTION DU GRAPHE POUR LES ITEMS MIKBOOKES
+                //on crée l'objet chart avec les paramètres contenus dans la réponse ajax
+                var chart_mkb = AmCharts.makeChart("chartdiv_mkb", chart_params_mkb);
+
+                //on donne les données à afficher au chart, après la moulinette de mise en forme
+                chart_mkb.dataProvider = generateChartData(chart_data_mkb);
+
+                chart_mkb.validateData();
+
+                //on zoom sur l'échelle globale du graphe
+                zoomChart(chart_mkb);
+
+            // on set les bornes du graph aus bornes temporelles définies par les données a l'initialisation
+            function zoomChart(chart) {
+                chart.zoomToIndexes(0, chart.dataProvider.length -1);
+            }
+        });
+
+        //fonction qui formatte les données de manière à pouvoir les injecter directement dans amcharts
+        function generateChartData(json_data){
+            //on instancie la variable chartData
+            var chartData = [];
+
+            //on récupère la partie de la réponse AJAX qui correspond aux données du graphe
+            {#                var json_data = JSON.parse(amchart_json_data);#}
+            //on constitue le tableau de données avec les bons formats pour amcharts
+            $.each(json_data, function(i,item){
+                item.date = new Date(item.date);
+                chartData.push(item);
+            });
+
+            return chartData;
+        }
+
+    </script>
+
+
+
+{% endblock  %}

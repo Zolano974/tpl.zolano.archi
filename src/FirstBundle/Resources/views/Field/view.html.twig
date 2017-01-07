@@ -1,0 +1,47 @@
+{# Workset/Create #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    
+    View Field  
+    
+{% endblock  %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        
+        <div class="panel col-md-10 col-md-offset-1">
+        
+            <div class='panel-body'>
+                <div class="col-md-12">
+                    <h1>    
+                        View Field
+                    </h1>
+                </div>                
+    
+                <hr>
+            
+                
+                <br>
+                <div class='row'>
+
+                    <div class="col-md-7" style="color: {{ field.color }} !important;font-weight:bold">
+                        <h2 >{{ field.name }}</h2>
+                    </div>
+
+                    <div class="col-md-3 col-md-offset-1">
+                        <h3>( {{ field.workset.name }} )</h3>
+                    </div>
+                </div>                
+            </div>            
+
+      
+
+        </div>
+
+    </div>
+</div>
+{% endblock  %}
+

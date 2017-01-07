@@ -1,0 +1,41 @@
+{# empty Twig template #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    
+    Zobby 
+    
+{% endblock  %}
+
+{% block content %}
+   
+
+    <html>
+
+        <body>
+            <h2>
+
+                Say {{ thing }} plus {{ plus }}
+
+            </h2>
+
+            <!-- Exemple de génération d'URL -->
+            <a href="{{ path('first_say', {'thing':  'link'}) }}">
+                Link
+            </a>
+
+          <p>
+            {# On affiche tous les messages flash dont le nom est « info » #}
+            {% for message in app.session.flashbag.get('info') %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </p>
+
+
+        </body>
+
+    </html>
+    
+{% endblock  %}
+

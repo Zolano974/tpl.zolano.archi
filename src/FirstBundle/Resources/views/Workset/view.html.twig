@@ -1,0 +1,138 @@
+{# Workset/Create #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    
+    View Workset  
+    
+{% endblock  %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        
+        <div class="panel col-md-10 col-md-offset-1">
+            
+            <div class='panel-body'>
+                
+{#                INFOS DE BASE DU WORKSET#}
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <h2 >{{ workset.name }}</h2>
+                    </div>   
+                    <div class="col-md-6">
+                        <br>
+                        <p> {{ workset.description }} <p>
+                    </div>                    
+                </div>
+    
+                <hr>
+
+                <div class='row'>
+                    <div class="col-md-6 col-md-offset-3">
+                        <h3>Liste des Matières</h3>
+                    </div>                    
+                </div>                
+                <div class='row'>
+                    <div class="table-responsive table list">
+                        <table class="table table-striped table-bordered">
+        {#                    <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Workset</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                                #}
+                            <tbody>
+                                
+                                    
+{#                            LISTE DES FIELDS (AVEC SOUS-LIGNE POUR CHAQUE ITEM)#}
+                                
+                            {% for field in workset.fields %}
+                                <tr onclick="display_items('{{ field.id }}')" style="cursor: pointer">
+                                    <td class="col-md-1">
+                                        {{ field.id }}
+                                    </td>     
+                                    <td class="col-md-8">
+                                        <div class="col-md-7">
+                                            <b>{{ field.name }} &nbsp;&nbsp; </b>
+                                        </div>
+                                        <div class="col-md-2">
+                                             ({{ field.items|length }} )
+                                        </div>
+                                        <div class="col-md-1 col-md-offset-1">
+                                            <div class="color-square" style="background-color: {{ field.color }}"></div>
+                                        </div>
+
+                                    </td>
+                                    <td class="col-md-2">
+                                        {{ field.workset.name }}
+                                    </td>
+                                    <td class='col-md-1'>
+                                        <a href="{{ path('edit_field', {'id': field.id }) }}">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="{{ path('delete_field', {'id': field.id }) }}">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% for item in field.items %}
+                                    <tr class="items_f{{ field.id }}" style="display:none;">
+                                        <td class="col-md-1" ></td>
+                                        <td class="col-md-6"> 
+                                            <div class="col-md-1">
+
+                                                #{{ item.id }}
+                                            </div>
+                                            <div class="col-md-10">
+                                                {{ item.number }} - {{ item.name }}
+                                            </div>
+                                        </td>
+                                        <td>-</td>
+                                        <td class='col-md-1'>
+                                            <a href="{{ path('edit_item', {'id': item.id }) }}">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                            <a href="{{ path('delete_item', {'id': item.id }) }}">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </a>                                    
+                                        </td>
+
+                                    </tr>
+
+                                {% else %}
+                                {% endfor %}
+                            {% else %}
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+                    
+                </div>                
+            </div>            
+        </div>
+
+    </div>
+</div>
+{% endblock  %}
+
+
+{% block js_scripts %}
+        <script type="text/javascript">
+            
+            function display_items(field_id){
+                $(".items_f"+field_id).toggle();
+            }
+            
+            $(document).ready(function(){
+                $("#items_table").DataTable();
+            });
+        </script>  
+{% endblock  %}
+

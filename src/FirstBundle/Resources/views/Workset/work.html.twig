@@ -1,0 +1,241 @@
+{# Workset/Work #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    
+    Tourplanner V2 {{workset_id }}
+    
+{% endblock  %}
+
+{% block content %}
+
+    <div class="container">
+
+
+        {#<h1><a href="{{ path('test') }}" class="globe">zobby</a></h1>#}
+        <div class='row'>
+            <div id="data" class="panel col-md-12" >
+
+                {#      HEADER      #}
+                <div class="panel-heading panelH">
+                    <h2 class=" panel-title"><big>Liste des Items </big></h2>
+
+                    <span id="showallitems" class="glyphicon glyphicon-eye-open col-md-offset-10 pointer" onclick='showallitems();'></span>
+                    <span id="hideallitems" class="glyphicon glyphicon-eye-close col-md-offset-10 pointer" onclick='hideallitems();' style="display:none"></span>
+    <!--                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#casDone">
+                        <span  class="glyphicon glyphicon-apple"></span>
+                    </button>-->
+
+                </div>
+
+                 {#      LISTE      #}
+                <div class="panel-body" >
+                        <!--    #table1    -->
+                    <table  id="items_table" class="table-responsive table col-md-12">
+
+                    {% for field_id, row in data %}
+                        {% set field = row.field %}
+                        {% set field_nb_tours = row.nb_tours_complete %}
+
+                        {#      LIGNE MATIERE      #}
+                        <tr class="push-top">
+
+                            <!-- CASE DE LA MATIERE-->
+                            <th id="mat_{{ field_id }}" class="field_td col-md-12 pointer" onclick="deplier({{field_id}})" style="background-color:{{ field.color }}">
+                                <div class="col-md-11">
+                                    <span class="col-md-3">{{ field.name }}</span>
+                                    <small style="margin-left:5%" id="thumbsups-{{ field_id }}">
+
+                                         {#      AFFICHAGE DES POUCES/TOUR      #}
+                                        {%for i in 0..field_nb_tours %}
+                                            {% if i > 0%}
+                                                <span class="glyphicon glyphicon-thumbs-up" ></span>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </small>
+                                </div>
+                            </th>
+
+                             {#      AFFICHAGE DES matrices kanban     #}
+                            {% for num_tour, tour in tours%}
+                                {% if num_tour <= field_nb_tours %}
+                                    {% set globe_color = "style=color:#0f4" %}
+                                {% else %}
+                                     {% set globe_color = "" %}
+                                {% endif %}
+                                {% set globe_html_id = "t-" ~ num_tour ~ "_f-" ~ field_id %}
+
+                                <th >
+                                    <a href="{{ path('kanban_kanban', {'field_id' : field_id, 'iteration' : num_tour }) }}" class="globe">
+                                        <span id="{{ globe_html_id }}"
+                                              class="glyphicon glyphicon-th field_{{ field_id }}Xtour_{{ num_tour }}_globe pointer"
+                                              {{ globe_color }}>
+                                        </span>
+                                    </a>
+                                </th>
+                            {% endfor %}
+                        </tr>
+                        {% for item in row.items %}
+                            {% if status[item.id].mikbook %}
+                                {% set book = "style=display:none" %}
+                                {% set glasses = "" %}
+                                {% set class = "mikbook_ok" %}
+                            {% else %}
+                                {% set book = "" %}
+                                {% set glasses = "style=display:none" %}
+                                {% set class = "" %}
+                            {% endif %}
+                            <tr>
+                                <td id="f-{{ field_id }}_i-{{ item.id }}" class="col-md-12 check_item {{ class }} subfield-{{ field_id }}" style="display:none">
+                                    <span class="col-md-8 col-xs-8 item_body">
+                                        #{{ item.number }} &nbsp;&nbsp;
+                                        {{item.name}}
+                                    </span>
+                                    <span class="col-md-2 col-xs-2">
+                                        {% set html_id = "i-" ~  item.id ~ "_mkb_f-" ~  field_id  %}
+                                        <span {{ book }} id="{{ html_id }}"
+                                                         class="glyphicon glyphicon-book pointer"
+                                                         onclick='mikbook({{ item.id }},{{field_id}},"{{ workset_id }}");'>
+                                        </span>
+
+                                        <span {{ glasses }} id="{{ html_id }}_ok" class="glyphicon glyphicon-sunglasses mikbook_ok"></span>
+                                    </span>
+                                </td>
+
+                            {% for num_tour, tour in tours%}
+                                {% if num_tour <= field_nb_tours %}
+                                    {% set check_color = "style=color:#0f4" %}
+                                {% else %}
+                                     {% set check_color = "" %}
+                                {% endif %}
+                                {% if tour[item.id].done == 0%}
+                                    {% set undone = "" %}
+                                    {% set check = "style=display:none;" %}
+                                {% else %}
+                                    {% set undone = "style=display:none;" %}
+                                    {% set check = check_color %}
+                                {% endif %}
+                                <td class="check_item subfield-{{ tour[item.id].field_id }}" style="display:none">
+                                    <span class="glyphicon glyphicon-pencil pointer"      {#      AFFICHAGE DES matrices kanban     #}
+                                          id="chk_t-{{ num_tour }}_i-{{ tour[item.id].item_id }}"
+                                          name="tour_{{ num_tour }}_check" {{ undone }}
+                                          onclick='done({{ num_tour }},{{ tour[item.id].item_id }},{{ field_id }},{{ workset_id }});'></span>
+
+                                    <span id="chk_t-{{ num_tour }}_i-{{ tour[item.id].item_id }}_ok"
+                                          class="glyphicon glyphicon-ok-sign field_{{ tour[item.id].field_id }}Xtour_{{ num_tour }} itemdone"
+                                          {{ check }}></span>
+
+                                </td>
+                            {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock  %}
+
+
+{% block js_scripts %}
+
+    <script type="text/javascript">
+
+        function showallitems(){
+            $('.check_item').show();
+            $("#hideallitems").show();
+            $("#showallitems").hide();
+        }
+
+        function hideallitems(){
+            $('.check_item').hide();
+            $("#showallitems").show();      
+            $("#hideallitems").hide();
+        }        
+        
+        function deplier(field_id){
+            $('.subfield-'+field_id).toggle();
+        }
+
+        
+        //fonction JS qui coche l'item comme mikbooké en BDD et qui met à jour la vue
+        function mikbook(pitem_id, pfield_id, pworkset_id){   
+            
+            
+            console.log('field ' + pfield_id);
+            console.log('item ' + pitem_id);
+            console.log('workset ' + pworkset_id);            
+
+            //ID html pour la div qui contient le titre de l'item
+            var item_body_id = 'f-'+pfield_id+'_i-'+pitem_id;
+            //id html pour le glyphicon du mikbook ( + sunglasses)
+            var html_id = 'i-'+pitem_id+'_mkb_f-'+pfield_id;
+            //appel ajax vers ItemController:Mikbook($item_id)
+            $.post( 
+                    '{{ path('mikbook_item') }}',
+                    {
+                        item_id     : pitem_id,
+                        workset_id  : pworkset_id,
+                        field_id    : pfield_id
+                    }   
+            )
+            .done(function(data){
+                console.log(data);
+                //on ajoute la classe qui écrit l'item en vert
+                $("#"+item_body_id).addClass('mikbook_ok');
+                //on cache l'icone du livre
+                $("#"+html_id).hide();
+                //on montre l'icone des lunettes
+                $("#"+html_id+"_ok").show();
+            });
+            
+        }
+        
+        function done(piteration, pitem_id, pfield_id, pworkset_id){
+            
+            console.log('field ' + pfield_id);
+            console.log('item ' + pitem_id);
+            console.log('workset ' + pworkset_id);
+            
+            var html_id = "chk_t-" + piteration + "_i-" + pitem_id;
+            
+            //appel ajax vers ItemController:Done($item_id)
+            $.post( 
+                    '{{ path('done_item') }}',
+                    {
+                        item_id : pitem_id,
+                        iteration : piteration,
+                        workset_id  : pworkset_id,
+                        field_id : pfield_id
+                    }   
+            )
+            .done(function(data){ //field_complete
+        
+{#                var response = $.parseJSON(data);#}
+                
+
+                
+                $("#"+ html_id).hide();
+                $("#"+ html_id+"_ok").show();  
+                
+                if(data.field_done){
+                    $("#thumbsups-"+data.field_id).append('<span class="glyphicon glyphicon-thumbs-up" ></span>');
+                    $(".field_"+data.field_id+"Xtour_"+piteration).css('color','#0f4');
+                    $(".field_"+data.field_id+"Xtour_"+piteration+'_globe').css('color','#0f4');                    
+                }
+
+            });            
+        }
+        
+        $(document).ready(function(){
+
+        });
+    </script>    
+{% endblock  %}
+

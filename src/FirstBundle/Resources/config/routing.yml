@@ -1,0 +1,153 @@
+first_homepage:
+    path:     /
+    defaults: { _controller: FirstBundle:Default:index }
+    
+first_say:
+    path:     /say/{thing}
+    defaults: { _controller: FirstBundle:Default:say,thing: anything }
+
+#Worksets 
+
+#test:
+#    path:     /test
+#    defaults: { _controller: FirstBundle:Workset:test }
+
+work_workset:
+    path:     /workset/work/{id}
+    defaults: { _controller: FirstBundle:Workset:work }
+
+list_workset:
+    path:     /workset/index
+    defaults: { _controller: FirstBundle:Workset:index }
+
+view_workset:
+    path:     /workset/view/{id}
+    defaults: { _controller: FirstBundle:Workset:view }
+    
+create_workset:
+    path:     /workset/create
+    defaults: { _controller: FirstBundle:Workset:create }
+    
+edit_workset:
+    path:     /workset/edit/{id}
+    defaults: { _controller: FirstBundle:Workset:edit }
+    
+delete_workset:
+    path:     /workset/delete/{id}
+    defaults: { _controller: FirstBundle:Workset:delete }
+    
+create_tour:
+    path:     /create/tour
+    defaults: { _controller: FirstBundle:Workset:createNewTour }
+    
+#Fields
+list_field:
+    path:     /field
+    defaults: { _controller: FirstBundle:Field:index }
+  
+view_field:
+    path:     /field/view/{id}
+    defaults: { _controller: FirstBundle:Field:view }
+    
+create_field:
+    path:     /field/create
+    defaults: { _controller: FirstBundle:Field:create }
+    
+edit_field:
+    path:     /field/edit/{id}
+    defaults: { _controller: FirstBundle:Field:edit }
+    
+delete_field:
+    path:     /field/delete/{id}
+    defaults: { _controller: FirstBundle:Field:delete }
+
+#Items
+list_item:
+    path:     /item
+    defaults: { _controller: FirstBundle:Item:index }
+  
+view_item:
+    path:     /item/view/{id}
+    defaults: { _controller: FirstBundle:Item:view }
+    
+create_item:
+    path:     /item/create
+    defaults: { _controller: FirstBundle:Item:create }
+    
+edit_item:
+    path:     /item/edit/{id}
+    defaults: { _controller: FirstBundle:Item:edit }
+    
+delete_item:
+    path:     /item/delete/{id}
+    defaults: { _controller: FirstBundle:Item:delete }
+    
+mikbook_item:
+    path:     /item/mikbook/
+    defaults: { _controller: FirstBundle:Item:mikbook }
+    
+done_item:
+    path:     /item/done/
+    defaults: { _controller: FirstBundle:Item:done }
+    
+test:
+    path:     /item/test/
+    defaults: { _controller: FirstBundle:Item:test }
+    
+    
+#Kanban
+kanban_kanban:
+    path:     /kanban/{field_id}/{iteration}
+    defaults: { _controller: FirstBundle:Kanban:kanban }
+    
+kanban_stepup:
+    path:     /kanban/stepup/{item_id}/{iteration}/{field_id}/{workset_id}
+    defaults: { _controller: FirstBundle:Kanban:stepup }
+
+
+#STATISTIQUES
+stats_avancement:
+    path:    /stats/curve/{workset_id}/{mikbook}
+    defaults: { _controller: FirstBundle:Stats:curve, mikbook: false }
+
+stats_tour:
+    path:    /stats/tour/{workset_id}
+    defaults: { _controller: FirstBundle:Stats:tour, mikbook: false }
+
+stats_notes:
+    path:    /stats/note/{workset_id}
+    defaults: { _controller: FirstBundle:Stats:note, mikbook: false }
+
+mark_note:
+    path:    /stats/marknote/{workset_id}
+    defaults: { _controller: FirstBundle:Stats:marknote }
+
+#Reminders
+
+reminders_display:
+    path:    /reminder/{workset_id}
+    defaults: { _controller: FirstBundle:Reminder:display }
+
+reminder_index:
+    path:    /reminder
+    defaults: { _controller: FirstBundle:Reminder:index }
+
+reminder_show:
+    path:    /reminder/{id}/show
+    defaults: { _controller: FirstBundle:Reminder:show }
+
+reminder_edit:
+    path:    /reminder/{id}/edit
+    defaults: { _controller: FirstBundle:Reminder:edit }
+
+reminder_set_text:
+    path:    /reminder/set/text/{workset_id}
+    defaults: { _controller: FirstBundle:Reminder:setText }
+
+reminder_delete:
+    path:    /reminder/{id}/delete
+    defaults: { _controller: FirstBundle:Reminder:delete }
+
+reminder_new:
+    path:    /reminder/new
+    defaults: { _controller: FirstBundle:Reminder:new }

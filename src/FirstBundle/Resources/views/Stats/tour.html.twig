@@ -1,0 +1,259 @@
+{# Item/Index #}
+
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block title %}
+    Statistiques
+
+{% endblock  %}
+
+{% block content %}
+    <div class="container">
+
+        {# Frise qui propose tous les tours #}
+        <div id="tours-breadcrumb" class="row tours-breadcrumb">
+            {% for it in it_numbers %}
+                {%  set class = '' %}
+                {% if it == iteration %}
+                    {%  set class = 'tour-span-negative' %}
+                {%  else %}
+                    {%  set class = 'tour-span' %}
+                {%  endif %}
+                <span id="breadcrumb-tour-{{ it }}" class="col-xs-1 {{ class }}" onclick="loadTour({{ it }})">
+                    <center>{{ it }}</center>
+                </span>
+
+            {% endfor %}
+        </div>
+
+
+        {# Affichage des stats globales du tour#}
+        <div class="row">
+            <div class="col-xs-5">
+
+                <h1>Tour n° <div id="iteration">{{ iteration }}</div></h1>
+            </div>
+            <div class="col-xs-2">
+                Items : <span id="items_done">{{ stats.items.done }}</span>/<span id="items_total">{{ stats.items.total }}</span>
+                <br>
+                Matieres : <span id="fields_done">{{ stats.fields.done }}</span>/<span id="fields_total">{{ stats.fields.total }}</span>
+            </div>
+            <div class="col-xs-5">
+                <div class="loader-container ">
+                    {#<div class="progression">#}
+                        <progress id="global_progress" max="{{ stats.items.total }}" value="{{ stats.items.done }}" class="progress-bar-custom"></progress>
+                    {#</div>#}
+                </div>
+                {#<i>// TODO : Barre de %progression à <span id="items_percentage">{{ stats.items.percentage }}</span>%</i>#}
+
+
+            </div>
+        </div>
+        <hr>
+        {# Affichage des stats pour chaque matière #}
+        <div class="row">
+            <h2>Matières</h2>
+        </div>
+
+        {% for id, field in stats.fields_stats %}
+
+            <div class="col-xs-3">
+                <div class="row">
+                    <br>
+                    <b><center><big>{{ field.field_name }}</big>(<span id="{{ id }}-items_percentage">{{ field.percentage }}</span>%)</center></b>
+                </div>
+                <div class="row">
+                    {#<div class="stats-square">#}
+                        {#Total : <span id="{{ id }}-items_global">{{ field.items_global }}</span>#}
+                        {#<br>#}
+                        {#Terminés : <span id="{{ id }}-items_done">{{ field.items_done }}</span>#}
+                        {#<br>#}
+
+
+                        <div id="piechart-field-{{ id }}" class="piechartdiv" >
+
+                        </div>
+
+                    {#</div>#}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+
+
+
+{% endblock  %}
+
+{% block js_scripts %}
+
+
+<script type="text/javascript">
+
+    var pie_charts = [];
+
+    var old_iteration = {{ iteration }};
+
+    $(document).ready(function(){
+//            alert("nikoumouk");
+
+        var stats = {{ stats.fields_stats | json_encode | raw }};
+
+        pie_charts = generatePieCharts(stats);
+
+    });
+
+
+    //genère l'ensemble des pie charts pour les fields présents dans la liste
+    function generatePieCharts(stats){
+
+        var charts = [];
+
+        for(var id in stats){
+
+            var field = stats[id];
+
+            console.log(field);
+
+            var percentage_done = field.percentage;
+            var percentage_undone = 100 - percentage_done;
+
+            var params = generatePieParams(percentage_done, percentage_undone, field.color);
+
+            var html_id = "piechart-field-" + id;
+
+            $("#"+html_id).html("");
+            var chart_pie = AmCharts.makeChart(html_id, params);
+
+            chart_pie.validateData();
+
+            charts[id] = chart_pie;
+
+        }
+
+        return charts;
+
+    }
+
+
+    //génère l'objet de configuration du PIE CHART
+    function generatePieParams(done, undone, color){
+
+        console.log("color : " + color);
+
+        var pie_params =    {
+
+            "type": "pie",
+            "balloonText": " <b>[[title]]</b><br>([[percents]]%)</span>",
+//                    "sequencedAnimation": true,
+            "labelText": "",
+            "titleField": "label",
+            "valueField": "percent",
+            "colorField": "color",
+            "fontFamily": "Arial",
+            "fontSize": 12,
+            "dataProvider": generatePieData(done, undone, color)
+        };
+
+        return pie_params;
+
+    }
+
+    //genère la partie DATA de la configuration du graphe
+    function generatePieData(done, undone, color){
+        return [
+            {
+                "label": "Terminés",
+                "percent": done,
+                "color" : color
+            }
+            ,
+            {
+                "label": "A Finir",
+                "percent": undone,
+                "color": "#ffffff"
+            }
+        ];
+    }
+
+    //on appelle en ajax les données pour le nouveau tour selecionné et on génère les graphes a nouveau
+    function loadTour(iteration){
+
+        //url de l'action cible
+        var url = '{{ path('stats_tour', {'workset_id' : workset_id}) }}?iteration=' + iteration;
+
+        $.get(
+                url
+        )
+        .done(function(data){
+
+            //on change le style du tour qui a été quitté (normal)
+            $("#breadcrumb-tour-"+old_iteration).prop('class', 'col-xs-1 tour-span');
+
+            console.log("#breadcrumb-tour-"+iteration);
+            //on change le style du nouveau tour (negative)q
+            $("#breadcrumb-tour-"+iteration).prop('class', 'col-xs-1 tour-span-negative');
+
+            console.log("old : " + old_iteration + "\n new : " + iteration);
+
+            old_iteration = iteration;
+
+            console.log("#breadcrumb-tour-"+data.iteration);
+
+            //maj du numéro de tour affiché
+            $("#iteration").html(data.iteration);
+
+            console.log(data.stats);
+
+            //maj de sstats globales du tour
+            //ITEMS
+            $("#items_done").html(data.stats.items.done);
+            $("#items_total").html(data.stats.items.total);
+            $("#items_percentage").html(data.stats.items.percentage);
+            //FIELDS
+            $("#fields_done").html(data.stats.fields.done);
+            $("#fields_total").html(data.stats.fields.total);
+            //PROGRESS BAR
+            $("#global_progress").attr('max', data.stats.items.total);
+            $("#global_progress").attr('value', data.stats.items.done);
+
+
+            var fieldstats = data.stats.fields_stats;
+
+            //maj des graphes & valeurs pour chaque field
+            for(var field_id in fieldstats ){
+
+                var field = fieldstats[field_id];
+                //maj du %
+                $("#" + field_id + "-items_percentage").html(field.percentage);
+                var done = field.percentage;
+                var undone = 100 - done;
+                //génération des nouvelles données du graphe
+                var newData = generatePieData(done, undone, field.color);
+                //maj du graphe avec les nouvelles données
+                pie_charts[field_id].dataProvider = newData;
+                pie_charts[field_id].validateData();
+//                pie_charts[field_id].animateAgain();
+            }
+
+
+
+        });
+
+    }
+
+
+
+</script>
+
+
+
+
+
+
+
+{% endblock  %}

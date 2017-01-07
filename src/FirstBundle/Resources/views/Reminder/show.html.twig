@@ -1,0 +1,48 @@
+{% extends "FirstBundle:Layouts:layout.html.twig" %}
+
+{% block content %}
+    <h1>Reminder</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ reminder.id }}</td>
+            </tr>
+            <tr>
+                <th>Userid</th>
+                <td>{{ reminder.userId }}</td>
+            </tr>
+            <tr>
+                <th>Worksetid</th>
+                <td>{{ reminder.worksetId }}</td>
+            </tr>
+            <tr>
+                <th>Xcoord</th>
+                <td>{{ reminder.xCoord }}</td>
+            </tr>
+            <tr>
+                <th>Ycoord</th>
+                <td>{{ reminder.yCoord }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ reminder.text }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('reminder_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('reminder_edit', { 'id': reminder.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
