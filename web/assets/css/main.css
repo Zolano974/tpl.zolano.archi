@@ -1,0 +1,293 @@
+
+/* Classes générales */
+
+.content{
+    margin-top: 5%;
+}
+
+.list .glyphicon{
+    color: #333;
+}
+
+.btn-custom{
+    min-width: 80px;
+    border-radius: 0px !important;
+    background-color: #000;
+    color: #FFF;
+    
+}
+
+.btn-custom:hover{
+    border-radius: 0px !important;
+    background-color: white;
+    color: #222;
+    border:1px solid #222;
+}
+
+/* Classes dédiées Gestion Métier */
+
+.color-square{
+    max-width: 18px;
+    max-height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    border: 1px solid black;
+}
+
+#colorpicker{
+    /*background-color: #333;*/
+    /*border: 1px solid black;*/
+    min-height: 190px;
+    min-width: 190px;
+}
+
+/* PARTIE DEDIEE A LA VUE DE TRAVAIL */
+
+.push-top{
+    margin-top: 15px;
+}
+
+.field_td{
+    border-radius: 4px;
+}
+
+
+.pointer{
+    cursor: pointer;
+}
+
+.globe{
+    color: #111;
+}
+
+.item_body{
+    margin-left: 2%;
+    overflow-x: no-display;
+    font-size: 90%;
+}
+
+
+.mikbook_ok{
+    color:#0a0;
+}
+
+.check_item{
+
+    height: 20px;
+
+}
+
+/* PARTIE DEDIEE AU KANBAN */
+
+.col-header{
+    text-align: center;
+    font-weight: bold;
+    font-size: medium;
+    background-color: #77d5f7;
+    padding-top: 10px;
+    padding-bottom:  10px;
+/*    background-color: #84c4e2;*/
+}
+
+.square{
+    
+    cursor : pointer !important;
+    
+    font-size:smaller;
+    
+    min-width: 80px;
+    min-height: 80px;
+    background-color: #baec7e;
+    
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    
+}
+
+.kb{
+    border-right: 1px solid black;
+}
+
+.column{
+    min-height: 400px;
+    max-height: 400px;
+    overflow-y: scroll;
+    background-color: #DBECFD;
+}
+
+/** PARTIE DEDIEE AUX STATS */
+
+/*!*SUR TABLETTE *!*/
+/*@media screen and (max-width: 800px) {*/
+    /*.chartdiv{*/
+        /*!*border:1px solid black;*!*/
+        /*min-height:200px;*/
+    /*}*/
+
+/*}*/
+/*!* SUR PC *!*/
+/*@media screen and (min-width: 800px) {*/
+    /*.chartdiv{*/
+        /*!*border:1px solid black;*!*/
+        /*min-height:500px;*/
+    /*}*/
+
+/*}*/
+
+.chartdiv{
+    border:1px solid #333;
+    min-height:350px;
+}
+
+.piechartdiv{
+    border: 1px solid white;
+    margin-top: 8px;
+    min-height:150px;
+    min-width: 150px;
+}
+
+.graph-container{
+    padding: 15px;
+    margin-left:10px;
+    margin-right:10px;
+
+
+}
+
+
+.stats-square{
+    background-color: #0a0a0a;
+    color: white;
+    font-size: 90%;
+    width: 120px;
+    height: 120px;
+
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 8px;
+}
+
+#tours-breadcrumb{
+    width: 100%;
+    height: 35px;
+    background-color: #1d5987;
+
+}
+
+#tours-breadcrumb .tour-span{
+    cursor: pointer;
+    color:white;
+    min-height: 35px;
+    border-right: 1px solid white;
+    padding-top: 1%;
+}
+#tours-breadcrumb .tour-span-negative{
+    background-color: white;
+    cursor: pointer;
+    color: #1d5987;
+    min-height: 35px;
+    border-right: 1px solid white;
+    padding-top: 1%;
+}
+
+/*.loader-container{*/
+    /*min-height: 40px;*/
+    /*border: 1px solid black;*/
+    /*border-radius: 10px;*/
+/*}*/
+
+.progression{
+    min-width:100%;
+    min-height:100%;
+    border-radius: 10px;
+    background-color: #00aa00;
+}
+
+
+
+.reminder{
+    /*min-height: 80px;*/
+    /*border: 1px solid black;*/
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /*padding : 2px;*/
+
+}
+
+.reminder-textarea{
+    width: 100%;
+    height:100%;
+    min-height:160px;
+    /*max-height:135px;*/
+    border-radius: 10px 10px 10px 10px;
+
+    /*background-color: #ccd232;*/
+    background-image: url("../img/note-background.jpg");
+}
+
+
+.bookmark{
+
+}
+
+.bookmark-filled{
+    padding: 10px;
+
+    box-shadow: 5px 5px 3px #888888;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    background-image: url("../img/note.png");
+
+    /*overflow-y: scroll;*/
+
+    width: 100%;
+    min-height: 150px;
+    /*max-height: 150px;*/
+
+    cursor: pointer;
+}
+
+.bookmark-shadow{
+    box-shadow: 8px 8px 4px #888888;
+
+    /*background-color: #D9e9fc;*/
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px dashed #999999;
+
+    min-height: 150px;
+    /*max-height: 150px;*/
+    cursor: pointer;
+}
+
+
+.progress-bar-custom{
+    width:100%;
+    height:100%;
+    min-height:40px;
+    margin-right:10%;
+    /*border-radius : 10px;*/
+}
+
+
+/*progress[value]::-webkit-progress-bar {*/
+    /*background-color: #eee;*/
+    /*border-radius: 2px;*/
+    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;*/
+/*}*/
+
+/*progress[value]::-webkit-progress-value {*/
+    /*background-image:*/
+            /*-webkit-linear-gradient(-45deg,*/
+            /*transparent 33%, rgba(0, 0, 0, .1) 33%,*/
+            /*rgba(0,0, 0, .1) 66%, transparent 66%),*/
+            /*-webkit-linear-gradient(top,*/
+            /*rgba(255, 255, 255, .25),*/
+            /*rgba(0, 0, 0, .25)),*/
+            /*-webkit-linear-gradient(left, #09c, #f44);*/
+
+    /*border-radius: 2px;*/
+    /*background-size: 35px 20px, 100% 100%, 100% 100%;*/
+/*}*/
