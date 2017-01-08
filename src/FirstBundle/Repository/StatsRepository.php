@@ -99,6 +99,7 @@ class StatsRepository{
                             ->leftJoin('lt', 'tour','t','lt.tour_id = t.id')
                             ->where('lt.field_id IN (' . $fieldsIdString . ')')
                             ->andWhere('lt.user_id  = ' . $user_id)
+                            ->andWhere('done = 1')
                             ->andWhere('t.iteration = ' . $iteration);
 
         $count_done = $query_done->execute()->fetch();

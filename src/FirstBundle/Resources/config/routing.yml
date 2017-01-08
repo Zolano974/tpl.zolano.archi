@@ -39,6 +39,10 @@ delete_workset:
 create_tour:
     path:     /create/tour
     defaults: { _controller: FirstBundle:Workset:createNewTour }
+
+delete_all_tours:
+    path:     /delete/all/tours
+    defaults: { _controller: FirstBundle:Workset:deleteAllTours }
     
 #Fields
 list_field:

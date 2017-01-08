@@ -173,10 +173,10 @@ class ItemRepository extends EntityRepository
     ############# FONCTIONS LIEES A INFLUXDB ###########"""
     
     //renvoie toutes les courbes des matières du workset, ainsi que la courbe agrégée
-    public function loadWorksetData($user_id, $workset, $begin = null, $end = null, $mikbook = false, $aggreg = 'day'){
+    public function loadWorksetData($user_id, $workset, $begin = null, $end = null, $mikbook = false, $aggreg = 'hour'){
         
         $fields = $workset->getFields();
-        $fields[] = null;
+//        $fields[] = null;
         
         return $this->loadFieldsData($user_id, $workset->getId(), $workset->getFields(), $begin, $end, $mikbook, $aggreg);
     }
@@ -195,8 +195,8 @@ class ItemRepository extends EntityRepository
      *                                      'chart_params'  =>  Les paramètres du graphe (en JSON), directement pluggable dans ungraphe amCharts :                  chart = AmCharts.makeChart("html_id", chart_params);
      *                                      'chart_data'    =>  Les données formatées pour Amcharts (en JSON), directement pluggable dans un graphe amChart :       chart.dataProvider = generateChartData(chart_data);
      */
-    public function loadFieldsData($user_id, $workset_id, $fields = array(), $begin = null, $end = null, $mikbook = false, $aggreg = 'day'){
-        
+    public function loadFieldsData($user_id, $workset_id, $fields = array(), $begin = null, $end = null, $mikbook = false, $aggreg = 'hour'){
+//        dump($aggreg);
         $influx = $this->getInfluxRepository();
 //
         //on récupère les données des KPI du graphe
@@ -212,6 +212,10 @@ class ItemRepository extends EntityRepository
 
         //on obtient un objet JSON représentant les paramètres du graphe AmCharts, appliquables directement
         $chart_params = $influx->getAmChartsJsonParams($series);
+
+//        dump($chart_params);
+//        dump($chart_data);
+//        die;
 
         //on ordonne le résultat dans un structure à 4 champs
         $output = array(
@@ -241,8 +245,8 @@ class ItemRepository extends EntityRepository
         $series = array();
 
         //on assure les valeurs de BEGIN et END
-        $date = date("Y-m-d");
-        //$last_week = date("Y-m-d",mktime(0,0,0,date("m"), date("d")-7, date("Y")));
+//        $date = date("Y-m-d");
+        $date = date("Y-m-d",mktime(0,0,0,date("m"), date("d")+4, date("Y")));
         $last_month = date("Y-m-d",mktime(0,0,0,date("m")-1, date("d"), date("Y")));
 
         //si les dates ne sont pas renseignées, on met les bornes par défaut (de ya un mois à AJD)

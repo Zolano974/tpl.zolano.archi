@@ -102,79 +102,48 @@ class WorksetController extends Controller
         
         
     }
-    
-    public function createNewTourAction(){
-        
-        $request = Request::createFromGlobals();
-        
-        $worksetDAO = $this ->getDoctrine()
-                            ->getManager()
-                            ->getRepository('FirstBundle:Workset');
-        
-        $tourDAO = $this ->getDoctrine()
-                            ->getManager()
-                            ->getRepository('FirstBundle:Tour');
-        
-//        $iteration = $request->query->get('iteration');
-        
-        $user_id = 1;
-        
-        $workset_id = 1;
-        
-        $iteration = $tourDAO->getLastTour($workset_id, $user_id);
-        
-        $iteration++;
 
-//        dump("user id : $user_id , $workset_id , iteration = $iteration");die;
-        
-        $tourDAO->createTour($iteration, $workset_id, $user_id);
-        
-        $url = $this->generateUrl('work_workset', array( //omde la route tel que défini dans routing.yml
-            'id' =>  $workset_id,
-        ));
-        
-        return $this->redirect($url);         
-    }
-    
     public function createAction()
     {
-        
+
         //on créer un Workset et on lui donne des valeurs en dur pour l'instant
         $workset = new Workset();
 
         $form = $this->createForm(WorksetType::class, $workset);
-        
+
         $request = Request::createFromGlobals();
-        
+
         //si le formulaire a été soumis
         if($request->getMethod() == 'POST'){
-            
+
             $form->handleRequest($request);
-            
+
             if($form->isValid()){
-                
+
                 //on récupère le EntityManager
-                $em = $this->getDoctrine()->getManager();   
-                
+                $em = $this->getDoctrine()->getManager();
+
                 //on persiste le workset
-                $em->persist($workset);    
-                
+                $em->persist($workset);
+
                 //on valide les transactions
-                $em->flush();  
-                
+                $em->flush();
+
                 //onrenvoie vers la liste
                 $url = $this->generateUrl('list_workset');
-                return $this->redirect($url);                
+                return $this->redirect($url);
             }
         }
-        
+
         return $this->render('FirstBundle:Workset:create-edit.html.twig',array(
             'action'    => 'create',
             'form'      => $form->createView(),
         ));
- 
+
     }
-    
+
+
+
     public function editAction($id){
         
         $em = $this->getDoctrine()->getManager();
@@ -248,5 +217,68 @@ class WorksetController extends Controller
         ));        
         
     }
-    
+
+    public function createNewTourAction(){
+
+        $request = Request::createFromGlobals();
+
+        $worksetDAO = $this ->getDoctrine()
+            ->getManager()
+            ->getRepository('FirstBundle:Workset');
+
+        $tourDAO = $this ->getDoctrine()
+            ->getManager()
+            ->getRepository('FirstBundle:Tour');
+
+//        $iteration = $request->query->get('iteration');
+
+        $user_id = 1;
+
+        $workset_id = 1;
+
+        $iteration = $tourDAO->getLastTour($workset_id, $user_id);
+
+        $iteration++;
+
+//        dump("user id : $user_id , $workset_id , iteration = $iteration");die;
+
+        $tourDAO->createTour($iteration, $workset_id, $user_id);
+
+        $url = $this->generateUrl('work_workset', array( //omde la route tel que défini dans routing.yml
+            'id' =>  $workset_id,
+        ));
+
+        return $this->redirect($url);
+    }
+
+    public function deleteAllToursAction(){
+
+        $request = Request::createFromGlobals();
+
+        $tourDAO = $this ->getDoctrine()
+            ->getManager()
+            ->getRepository('FirstBundle:Tour');
+
+//        $iteration = $request->query->get('iteration');
+
+        $user_id = 1;
+
+        $workset_id = 1;
+
+        //si la confirmation a été envoyée on supprime tous les tours
+        if($request->getMethod() == 'POST'){
+
+
+            $tourDAO->deleteAllTours($workset_id, $user_id);
+
+            $url = $this->generateUrl('work_workset', array( //omde la route tel que défini dans routing.yml
+                'id' =>  $workset_id,
+            ));
+
+            return $this->redirect($url);
+        }
+
+
+        return $this->render('FirstBundle:Workset:delete-tours.html.twig', array());
+    }
 }

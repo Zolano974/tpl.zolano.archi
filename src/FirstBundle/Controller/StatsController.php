@@ -44,7 +44,7 @@ class StatsController extends Controller {
 
             $data_done = $itemDAO->loadWorksetData($user_id, $workset, $begin_date, $end_date);
 
-            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true);
+            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true, 'hour');
         }
         catch(Exception $e){
             dump($e->getMessage());

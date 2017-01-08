@@ -95,6 +95,8 @@ class InfluxRepository{
      */
     public function selectQueryFromDatabase($database, $query){
 
+//        dump($query);
+
         try{
 
             $this->influxAdapter->setDataBase($database);
@@ -117,6 +119,8 @@ class InfluxRepository{
         $where = ($condition !== "") ? " WHERE $condition " : "" ;
 
         $query = "SELECT * FROM $collection $where";
+
+
 
         return $this->selectQueryFromDatabase($database, $query);
     }
@@ -254,7 +258,8 @@ class InfluxRepository{
 
         $params = $this->formatParams4amCharts($series);
 
-        $json_params = $this->generateJsonParams4amcharts($params, $series);
+//        $json_params = $this->generateJsonLineParams4amcharts($params, $series);
+        $json_params = $this->generateJsonStackedParams4amcharts($params, $series);
 
         return $json_params;
 
@@ -305,7 +310,7 @@ class InfluxRepository{
      * @param $params   OUTPUT de formatParams4amCharts(), objet contenant les paramètres pour tous les KPI à grapher
      * @return Json     Objet de conf prêt à l'emploi, appliquable directement sur un objet graph AmCharts lors de la fonction makeChart(html_id, json_params)
      */
-    private function generateJsonParams4amcharts($params){
+    private function generateJsonLineParams4amcharts($params){
 
         //        dump($params); exit;
 
@@ -368,6 +373,101 @@ class InfluxRepository{
                 "hideBulletsCount"      => 30,
                 "valueField"            => $chart->valueField,
                 "fillAlphas"            => 0,
+            );
+
+            $json_params->graphs[] = $graph;
+        }
+
+        $json_params->export = array(
+            "enabled"   => true,
+            "position"  => "bottom-right",
+        );
+
+//        dump($params);
+//        die;
+//        return json_encode($json_params);
+        return $json_params;
+    }
+
+
+    /** Utilise les params renvoyés par formatParams4amCharts(), et les utilise pour composer l'objet JSON qui va paramétrer ENTIEREMENT le graph amcharts
+     * @param $params   OUTPUT de formatParams4amCharts(), objet contenant les paramètres pour tous les KPI à grapher
+     * @return Json     Objet de conf prêt à l'emploi, appliquable directement sur un objet graph AmCharts lors de la fonction makeChart(html_id, json_params)
+     */
+    private function generateJsonStackedParams4amcharts($params){
+
+        //        dump($params); exit;
+
+        $json_params = new \stdClass();
+
+        $json_params->type = "serial";
+        $json_params->theme = "light";
+        $json_params->legend = array(
+            'marginLeft'        => 110,
+            'useGraphSettings'  => true,
+            "equalWidths"       => false,
+            "periodValueText"   => "total: [[value.sum]]",
+            "valueAlign"        => "left",
+            "valueText"         =>  "[[value]] ([[percents]]%)",
+            "valueWidth"        => 100
+        );
+        $json_params->chartScrollbar = array(
+            'enabled'           => true,
+            'scrollbarHeight'   => 20,
+        );
+        $json_params->valueScrollbar = array(
+            'enabled'           => false,
+            'scrollbarHeight'   => 10,
+        );
+        $json_params->chartCursor = array(
+            'cursorPosition'            => 'mouse',
+            'cursorAlpha'               => 0.1,
+            'cursorColor'               => "#333",
+            'color'                     => "#FFF",
+            'fullWidth'                 => true,
+            'valueLineBalloonEnabled'   => true,
+            "categoryBalloonDateFormat" => "DD MMM HHh00",
+//            "categoryBalloonDateFormat" => "HH heures",
+        );
+        $json_params->categoryField = "date";
+        $json_params->categoryAxis = array(
+            'parseDates'        => true,
+            "startOnAxis"       => true,
+            'axisColor'         => "#DADADA",
+            'minPeriod'         => "hh",
+            'twoLineMode'       => true,
+            'minorGridEnabled'  => true,
+            "gridAlpha"         => 0.07,
+        );
+        $json_params->valueAxes = array(array(
+            'id'                => 'v1',
+            'stackType'         => "regular",
+//            'axisColor'         => (isset($params[0]['axis'])) ? $params[0]['axis']->axisColor : "#333",
+            'axisThickness'     => 1,
+            'gridAlpha'         => 0.07,
+            'axisAlpha'         => 1,
+            'position'          => 'left',
+//            'precision'         => 3,
+        ));
+        $json_params->graphs = array();
+        foreach($params as $param){
+
+            $axis = $param['axis'];
+            $chart = $param['chart'];
+
+            $graph = array(
+                "valueAxis"             => "v1",
+                "bullet"                => "round",
+                "balloonText"           => $chart->valueField . " ! [[value]]",
+                "title"                 => $chart->title,
+//                "type"                  => "smoothedLine",
+                "bulletBorderThickness" => 1,
+                "lineColor"             => $axis->axisColor,
+                "legendColor"           => $axis->axisColor,
+                "hideBulletsCount"      => 30,
+                "valueField"            => $chart->valueField,
+                "fillAlphas"            => 0.5,
+                "lineAlpha"             => 0.5,
             );
 
             $json_params->graphs[] = $graph;

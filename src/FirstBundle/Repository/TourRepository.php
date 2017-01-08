@@ -95,27 +95,28 @@ class TourRepository extends EntityRepository
         $this->insertTourLinks($id, $workset_id, $user_id, $iteration);
 
     }
-    
+
     //insère les liens (link_tour_field & link_tour_item) pour un tour en BDD, pour le workset donné
     private function insertTourLinks($tour_id, $workset_id, $user_id, $iteration){
-        
+
         $em = $this->getEntityManager();
-        
+
         //on récupère la liste des fields du workset concerné
         $fields = $em   ->getRepository('FirstBundle:Field')
                         ->fetchAllWithItemsByWorksetId($workset_id);
-        
+
         foreach($fields as $field) {
             //pour chacun, on délègue la suite a insertLinks()
             $this->insertLinks($field, $tour_id, $user_id, $iteration);
         }
     }
-    
-    //insère le lien entre un tour et un field en BDD
+
+
+    //insère les lien entre un tour et un field en BDD
     private function insertLinks($field, $tour_id, $user_id, $iteration){
-        
+
         $cnx = $this->getEntityManager()->getConnection();
-        
+
         //on insère le lien entre tour et field
         $cnx  ->insert('link_tour_field', array(
                     'tour_id'   => $tour_id,
@@ -123,25 +124,70 @@ class TourRepository extends EntityRepository
                     'user_id'   => $user_id,
                     'done'      => 0, //a la création les tours ne sont pas cochés
                 ));
-        
+
         //on insère un lien entre tour et item pour chaque itzem
         foreach($field->getItems() as $item){
-            
+
             //on insère la ligne dans outeXitem, bindée au tour id, item_id, user_id
             $cnx    ->insert('link_tour_item', array(
                         'tour_id'   => $tour_id,
                         'item_id'   => $item->getId(),
                         'user_id'   => $user_id,
                         'done'      => 0, //a la création les tours ne sont pas cochés
-                    ));       
-            
+                    ));
+
             //on insere dans kanban_steps, bindée sur item_id, user_id, iteration
             $cnx    ->insert('kanban_item_step', array(
                         'item_id'   => $item->getId(),
                         'iteration' => $iteration,
                         'user_id'   => $user_id,
                         'step'      => 0, //a la création les kanban_items sont au step 0
-                    ));              
+                    ));
+        }
+    }
+
+    //supprime les liens (link_tour_field & link_tour_item) pour un tour en BDD, pour le workset donné
+    private function deleteTourLinks($tour_id, $workset_id, $user_id, $iteration){
+        $em = $this->getEntityManager();
+
+        //on récupère la liste des fields du workset concerné
+        $fields = $em   ->getRepository('FirstBundle:Field')
+            ->fetchAllWithItemsByWorksetId($workset_id);
+
+        foreach($fields as $field) {
+            //pour chacun, on délègue la suite a insertLinks()
+            $this->deleteLinks($field, $tour_id, $user_id, $iteration);
+        }
+    }
+
+    //supprime les liens entre un tour et field, item en BDD
+    private function deleteLinks($field, $tour_id, $user_id, $iteration){
+
+        $cnx = $this->getEntityManager()->getConnection();
+
+        //on supprime le lien entre tour et field
+        $cnx  ->delete('link_tour_field', array(
+            'tour_id'   => $tour_id,
+            'field_id'  => $field->getId(),
+            'user_id'   => $user_id,
+        ));
+
+        //on insère un lien entre tour et item pour chaque itzem
+        foreach($field->getItems() as $item){
+
+            //on insère la ligne dans outeXitem, bindée au tour id, item_id, user_id
+            $cnx    ->delete('link_tour_item', array(
+                'tour_id'   => $tour_id,
+                'item_id'   => $item->getId(),
+                'user_id'   => $user_id,
+            ));
+
+            //on insere dans kanban_steps, bindée sur item_id, user_id, iteration
+            $cnx    ->delete('kanban_item_step', array(
+                'item_id'   => $item->getId(),
+                'iteration' => $iteration,
+                'user_id'   => $user_id,
+            ));
         }
     }
     
@@ -163,5 +209,47 @@ class TourRepository extends EntityRepository
         
         return $result['last'];
                 
+    }
+
+    public function deleteAllTours($workset_id, $user_id){
+
+        $last_iteration = $this->getLastTour($workset_id, $user_id);
+
+        for($i = $last_iteration; $i >0; $i--){
+            $this->deleteTour($workset_id, $user_id, $i);
+        }
+    }
+
+    //supprime (ainsi que ses liens) le tour donné pour le workset, user et itération en paramètre
+    public function deleteTour($workset_id, $user_id, $iteration){
+
+        //delete tour
+        $em = $this->getEntityManager();
+
+        $tour = $this->findOneBy(array(
+            'userId'       => $user_id,
+            'workset_id'    => $workset_id,
+            'iteration'     => $iteration,
+        ));
+
+//        dump($tour);die;
+
+        if($tour !== null){
+
+            $tour_id = $tour->getId();
+
+            //on supprime le tour en question
+            $em->remove($tour);
+
+            //on supprime les liens en BDD
+            $this->deleteTourLinks($tour_id, $workset_id, $user_id, $iteration);
+
+            return true;
+
+        }
+        else{
+            return false;
+        }
+
     }
 }
