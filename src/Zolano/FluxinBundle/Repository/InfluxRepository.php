@@ -402,15 +402,15 @@ class InfluxRepository{
 
         $json_params->type = "serial";
         $json_params->theme = "light";
-        $json_params->legend = array(
-            'marginLeft'        => 110,
-            'useGraphSettings'  => true,
-            "equalWidths"       => false,
-            "periodValueText"   => "total: [[value.sum]]",
-            "valueAlign"        => "left",
-            "valueText"         =>  "[[value]] ([[percents]]%)",
-            "valueWidth"        => 100
-        );
+//        $json_params->legend = array(
+//            'marginLeft'        => 110,
+//            'useGraphSettings'  => true,
+//            "equalWidths"       => false,
+//            "periodValueText"   => "total: [[value.sum]]",
+//            "valueAlign"        => "left",
+//            "valueText"         =>  "[[value]] ([[percents]]%)",
+//            "valueWidth"        => 100
+//        );
         $json_params->chartScrollbar = array(
             'enabled'           => true,
             'scrollbarHeight'   => 20,
@@ -458,10 +458,10 @@ class InfluxRepository{
             $graph = array(
                 "valueAxis"             => "v1",
                 "bullet"                => "round",
-                "balloonText"           => $chart->valueField . " ! [[value]]",
+                "balloonText"           => $chart->valueField . " : [[value]]",
                 "title"                 => $chart->title,
 //                "type"                  => "smoothedLine",
-                "bulletBorderThickness" => 1,
+                "bulletBorderThickness" => 0.5,
                 "lineColor"             => $axis->axisColor,
                 "legendColor"           => $axis->axisColor,
                 "hideBulletsCount"      => 30,

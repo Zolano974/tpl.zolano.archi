@@ -4,4 +4,4 @@ app:
     
 first:
     resource: "@FirstBundle/Resources/config/routing.yml"
-    prefix:   /first
+    prefix:   /
