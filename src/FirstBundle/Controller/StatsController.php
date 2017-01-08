@@ -15,10 +15,13 @@ use \Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 use Zolano\FluxinBundle\Repository\InfluxRepository;
 
-class StatsController extends Controller {
+class StatsController extends AbstractController {
 
 
     public function curveAction($workset_id, $mikbook){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
 //        dump("zob");die;
 
@@ -80,6 +83,9 @@ class StatsController extends Controller {
     //  nb d'items terminés / nb items total => % global du tour
 
     public function tourAction($workset_id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $request = Request::createFromGlobals();
 
@@ -144,6 +150,9 @@ class StatsController extends Controller {
 
     public function notestatsAction($workset_id){
 
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $user_id = 1;
 
         $request = Request::createFromGlobals();
@@ -155,6 +164,9 @@ class StatsController extends Controller {
 
 
     public function noteAction($workset_id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $user_id = 1;
 
@@ -174,6 +186,9 @@ class StatsController extends Controller {
 
     //fonction dédiée Ajax, pour le mikbookage des items
     public function marknoteAction($workset_id) {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $user_id = 1;
 
@@ -207,6 +222,9 @@ class StatsController extends Controller {
     }
 
     public function testAction() {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $workset_id = 1;
 

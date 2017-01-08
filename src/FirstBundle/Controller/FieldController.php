@@ -15,10 +15,13 @@ use \Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 use \Doctrine\ORM\ORMException;
 
-class FieldController extends Controller
+class FieldController extends AbstractController
 {
     public function indexAction()
     {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -38,6 +41,9 @@ class FieldController extends Controller
     
     
     public function viewAction($id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -53,6 +59,9 @@ class FieldController extends Controller
     
     public function createAction()
     {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         //on créer un Workset et on lui donne des valeurs en dur pour l'instant
         $field = new Field();
@@ -103,6 +112,9 @@ class FieldController extends Controller
     }
     
     public function editAction($id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -146,6 +158,9 @@ class FieldController extends Controller
     }
     
     public function deleteAction($id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         if($id === null){
             throw new NotFoundResourceException();

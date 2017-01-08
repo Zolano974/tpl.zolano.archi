@@ -10,10 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
  * Reminder controller.
  *
  */
-class ReminderController extends Controller
+class ReminderController extends AbstractController
 {
 
     public function displayAction($workset_id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $user_id = 1;
 
@@ -41,6 +44,10 @@ class ReminderController extends Controller
      */
     public function indexAction()
     {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $em = $this->getDoctrine()->getManager();
 
         $reminders = $em->getRepository('FirstBundle:Reminder')->findAll();
@@ -58,6 +65,9 @@ class ReminderController extends Controller
      */
     public function newAction(Request $request)
     {
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $reminder = new Reminder();
         $form = $this->createForm('FirstBundle\Form\ReminderType', $reminder);
         $form->handleRequest($request);
@@ -82,6 +92,10 @@ class ReminderController extends Controller
      */
     public function showAction(Reminder $reminder)
     {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $deleteForm = $this->createDeleteForm($reminder);
 
         return $this->render('reminder/show.html.twig', array(
@@ -96,6 +110,10 @@ class ReminderController extends Controller
      */
     public function editAction(Request $request, Reminder $reminder)
     {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $deleteForm = $this->createDeleteForm($reminder);
         $editForm = $this->createForm('FirstBundle\Form\ReminderType', $reminder);
         $editForm->handleRequest($request);
@@ -164,6 +182,10 @@ class ReminderController extends Controller
      */
     public function deleteAction(Request $request, Reminder $reminder)
     {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $form = $this->createDeleteForm($reminder);
         $form->handleRequest($request);
 

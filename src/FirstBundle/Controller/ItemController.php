@@ -13,9 +13,12 @@ use \Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 use Zolano\FluxinBundle\Repository\InfluxRepository;
 
-class ItemController extends Controller {
+class ItemController extends AbstractController  {
 
     public function indexAction() {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -32,6 +35,9 @@ class ItemController extends Controller {
 
     public function viewAction($id) {
 
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $em = $this->getDoctrine()->getManager();
 
         $itemDAO = $em->getRepository('FirstBundle:Item');
@@ -44,6 +50,9 @@ class ItemController extends Controller {
     }
 
     public function createAction() {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         //on créer un Workset et on lui donne des valeurs en dur pour l'instant
         $item = new Item();
@@ -81,6 +90,9 @@ class ItemController extends Controller {
     }
 
     public function editAction($id) {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -122,6 +134,9 @@ class ItemController extends Controller {
     }
 
     public function deleteAction($id) {
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         if ($id === null) {
             throw new NotFoundResourceException();
@@ -198,7 +213,7 @@ class ItemController extends Controller {
 
         $request = Request::createFromGlobals();
 
-//        if ($request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
 
             $user_id = 1;
 
@@ -226,7 +241,7 @@ class ItemController extends Controller {
             $response->headers->set('Content-Type', 'application/json');
 
             return $response; //on utilise pas de template généralement en ajax
-//        }
+        }
     }
 
     public function fetchItemsDoneInfluxData($begin, $end, $user_id, $field_id = null){

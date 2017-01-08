@@ -12,11 +12,14 @@ use FirstBundle\Repository\KanbanRepository;
 use Zolano\FluxinBundle\Repository\InfluxRepository;
 use \Symfony\Component\Translation\Exception\NotFoundResourceException;
 
-class KanbanController extends Controller
+class KanbanController extends AbstractController
 {
     
     //action qui affiche le kanban d'unematiere pour un tour donné
     public function kanbanAction($field_id, $iteration){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         $user_id = 1;
         

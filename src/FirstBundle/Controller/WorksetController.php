@@ -12,11 +12,14 @@ use FirstBundle\Form\WorksetType;
 
 use \Symfony\Component\Translation\Exception\NotFoundResourceException;
 
-class WorksetController extends Controller
+class WorksetController extends AbstractController
 {
     public function indexAction()
     {
-        
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $worksetDAO = $this ->getDoctrine()
                             ->getManager()
                             ->getRepository('FirstBundle:Workset');
@@ -36,6 +39,9 @@ class WorksetController extends Controller
     
     public function viewAction($id){
 
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $workset = $this ->getDoctrine()
                     ->getManager()
                     ->getRepository('FirstBundle:Workset')
@@ -49,6 +55,9 @@ class WorksetController extends Controller
     }
     
     public function workAction($id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         $user_id = 1;
         
@@ -106,6 +115,9 @@ class WorksetController extends Controller
     public function createAction()
     {
 
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         //on créer un Workset et on lui donne des valeurs en dur pour l'instant
         $workset = new Workset();
 
@@ -145,6 +157,9 @@ class WorksetController extends Controller
 
 
     public function editAction($id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -186,6 +201,9 @@ class WorksetController extends Controller
     }
     
     public function deleteAction($id){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
         
         if($id === null){
             throw new NotFoundResourceException();
@@ -220,6 +238,9 @@ class WorksetController extends Controller
 
     public function createNewTourAction(){
 
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
+
         $request = Request::createFromGlobals();
 
         $worksetDAO = $this ->getDoctrine()
@@ -252,6 +273,9 @@ class WorksetController extends Controller
     }
 
     public function deleteAllToursAction(){
+
+        $connected = $this->checkConnected();
+        if(!($connected === true)) return $this->redirect($connected);
 
         $request = Request::createFromGlobals();
 

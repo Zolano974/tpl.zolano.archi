@@ -6,6 +6,14 @@ first_say:
     path:     /say/{thing}
     defaults: { _controller: FirstBundle:Default:say,thing: anything }
 
+auth:
+    path:     /auth
+    defaults: { _controller: FirstBundle:Abstract:auth }
+
+logout:
+    path:     /logout
+    defaults: { _controller: FirstBundle:Abstract:logout }
+
 #Worksets 
 
 #test:
