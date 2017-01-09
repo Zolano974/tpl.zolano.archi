@@ -5,7 +5,7 @@ namespace Zolano\FluxinBundle\Repository;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Zolano\FluxinBundle\Adapter\InfluxAdapter;
-
+use FirstBundle\Helpers\preprodHelper;
 use Doctrine\ORM\EntityManager;
 
 class InfluxRepository{
@@ -54,13 +54,16 @@ class InfluxRepository{
 //            'idb_dbname'    => 'items',
 //        );
 
+        $dbname = (preprodHelper::areWeOnPreprod()) ? 'items_preprod' : 'items';
+
+//        dump($dbname);die;
+
         $this->config = (count($config)) ? $config : array(
             'idb_user'      => 'admInflux',
             'idb_pwd'       => '12d1c5e1c1c39c557cb57819338efb80',
             'idb_host'      => '137.74.197.5',
-            'idb_dbname'    => 'items',
+            'idb_dbname'    => $dbname,
         );
-
 
 
 //        $this->db = $app->db;

@@ -18,6 +18,8 @@ class AbstractController extends Controller
 
     public function authAction(){
 
+
+
         $request = Request::createFromGlobals();
 
         $session = $this->get('session');
@@ -53,6 +55,8 @@ class AbstractController extends Controller
     }
 
     protected function checkConnected(){
+
+//        dump($_SERVER["SCRIPT_FILENAME"]);die;
 
         $session = $this->get('session');
 

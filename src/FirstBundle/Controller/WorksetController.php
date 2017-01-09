@@ -72,6 +72,8 @@ class WorksetController extends AbstractController
         $items = $worksetDAO->getAllItemsDataByWorksetId($id, $user_id);
         
         $tours = $tourDAO->getAllByNumber($id , $user_id);
+
+//        dump($tours);die;
         
         $item_status = $worksetDAO->getItemStatus($id, $user_id);
         

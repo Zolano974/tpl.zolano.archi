@@ -67,6 +67,8 @@ class TourRepository extends EntityRepository
             ->where('user_id = ' . $user_id)
             ->andWhere('workset_id = ' . $workset_id)
             ->orderBy('field_id, item_id, iteration', 'ASC');
+
+//        dump($qb->getSQL());die;
         
         return $qb  ->execute()
                     ->fetchAll();
