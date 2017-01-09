@@ -2,7 +2,7 @@
 
 namespace FirstBundle\Helpers;
 
-class preprodHelper
+class remindMe
 {
 
     public static function areWeOnPreprod(){
@@ -12,4 +12,11 @@ class preprodHelper
         }
         else return false; // we are on prod
     }
+
+    public static function amIConnected(){
+
+        return (isset($_SESSION['connected']) && $_SESSION['connected'] === true);
+
+    }
+
 }

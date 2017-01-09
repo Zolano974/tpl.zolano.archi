@@ -24,6 +24,23 @@
     border:1px solid #222;
 }
 
+/**
+        Barre de menu
+*/
+
+.navbar-ecg{
+    background-image: url("../img/ecg-rouge-thin.png") !important;
+    background-repeat: repeat-x !important;
+
+}
+.navbar-ecg a{
+    max-height:100%;
+    color: #FFF !important;
+}
+.navbar-ecg .dark{
+    color: #222 !important;
+}
+
 /* Classes dédiées Gestion Métier */
 
 .color-square{

@@ -5,7 +5,7 @@ namespace Zolano\FluxinBundle\Repository;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Zolano\FluxinBundle\Adapter\InfluxAdapter;
-use FirstBundle\Helpers\preprodHelper;
+use FirstBundle\Helpers\remindMe;
 use Doctrine\ORM\EntityManager;
 
 class InfluxRepository{
@@ -54,7 +54,7 @@ class InfluxRepository{
 //            'idb_dbname'    => 'items',
 //        );
 
-        $dbname = (preprodHelper::areWeOnPreprod()) ? 'items_preprod' : 'items';
+        $dbname = (remindMe::areWeOnPreprod()) ? 'items_preprod' : 'items';
 
 //        dump($dbname);die;
 
