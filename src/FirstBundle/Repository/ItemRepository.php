@@ -173,7 +173,7 @@ class ItemRepository extends EntityRepository
     ############# FONCTIONS LIEES A INFLUXDB ###########"""
     
     //renvoie toutes les courbes des matières du workset, ainsi que la courbe agrégée
-    public function loadWorksetData($user_id, $workset, $begin = null, $end = null, $mikbook = false, $aggreg = 'hour'){
+    public function loadWorksetData($user_id, $workset, $begin = null, $end = null, $mikbook = false, $aggreg = 'day'){
         
         $fields = $workset->getFields();
 //        $fields[] = null;
