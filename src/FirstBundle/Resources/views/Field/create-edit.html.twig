@@ -76,6 +76,18 @@
                     </div>
                 </div>
                         <hr>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            {{ form_label(form.order, "Ordre") }}
+                            {{ form_errors(form.order)}}
+                        </div>
+                        <div class="col-xs-6">
+                            {{ form_widget(form.order)}}
+                        </div>
+                    </div>
+                </div>
+                        <hr>
                 {{ form_rest(form) }}  
                 <div class="row">
                     <div class="form-group">

@@ -238,11 +238,13 @@ class TourRepository extends EntityRepository
 
             $tour_id = $tour->getId();
 
-            //on supprime le tour en question
-            $em->remove($tour);
-
             //on supprime les liens en BDD
             $this->deleteTourLinks($tour_id, $workset_id, $user_id, $iteration);
+
+            //on supprime le tour en question
+            $em->remove($tour);
+//            $em->persist();
+            $em->flush();
 
             return true;
 

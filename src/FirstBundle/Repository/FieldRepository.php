@@ -18,7 +18,8 @@ class FieldRepository extends EntityRepository
         $qb = $this ->createQueryBuilder('f')
                     ->leftJoin('f.items', 'i')
                     ->where('f.id = ' . $id)
-                    ->addSelect('i');
+                    ->addSelect('i')
+                    ->orderBy('f.order, i.number');
         
         return $qb->getQuery()->getResult()[0];
      
@@ -28,9 +29,9 @@ class FieldRepository extends EntityRepository
 
         $qb = $this ->createQueryBuilder('f')
                     ->leftJoin('f.items', 'i')
-                    ->orderBy('f.order')
-                    ->addSelect('i');
-        
+                    ->addSelect('i')
+                    ->orderBy('f.order, i.number');
+
         return $qb->getQuery()->getResult();
      
     }

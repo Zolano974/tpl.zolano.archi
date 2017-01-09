@@ -40,9 +40,9 @@
 {#                        LA LIGNE EST CLICKABLE POUR TOGGLE LES SOUS-LIGNES#}
 
                         <tr onclick="display_items('{{ field.id }}')" style="cursor: pointer">
-                            <td class="col-md-1">
-                                {{ field.id }} - 
-                            </td>     
+                            {#<td class="col-md-1">#}
+                                {#{{ field.id }} - #}
+                            {#</td>     #}
                             <td class="col-md-6">
                                 <div class="col-md-7">
                                     <b>{{ field.name }} &nbsp;&nbsp; </b>
@@ -68,6 +68,9 @@
                                 <a href="{{ path('delete_field', {'id': field.id }) }}">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
+                            </td>
+                            <td class="col-md-1">
+                                n° {{ field.order }}
                             </td>
                         </tr>
 {#                        SOUS-LIGNE POUR CHAQUE ITEM#}

@@ -8,10 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use FirstBundle\Repository\FieldRepository;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Zolano\FluxinBundle\Repository\InfluxRepository;
 
 class FieldType extends AbstractType {
 
@@ -32,7 +34,8 @@ class FieldType extends AbstractType {
 //                                            'querybuilder'  => function(FirstBundle\Repository\FieldRepository $r){
 //                                                return $r->getSelectListTest1();
 //                                            },
-        ));
+                ))
+                ->add('order', IntegerType::class);
     }
 
     /**
