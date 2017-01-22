@@ -114,8 +114,9 @@
     
     min-width: 80px;
     min-height: 80px;
-    background-color: #baec7e;
-    
+    /*background-color: #baec7e;*/
+    background-color: white;
+
     margin-top: 15px;
     margin-bottom: 15px;
     padding-top: 10px;

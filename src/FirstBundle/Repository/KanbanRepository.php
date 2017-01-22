@@ -36,9 +36,10 @@ class KanbanRepository extends EntityRepository
 //                    ->setParameter('u_id', $user_id)
 //                    ;
         
-        $query =    $qb ->select('item_id, item_name, iteration, user_id, step, done')
-                        ->from('kanbanXitem')
-                        ->where('field_id = :f_id')
+        $query =    $qb ->select('k.item_id, number, item_name, iteration, user_id, step, done')
+                        ->from('kanbanXitem','k')
+                        ->leftJoin('k','item','i', 'i.id = k.item_id')
+                        ->where('k.field_id = :f_id')
                         ->andWhere('iteration = :it')
                         ->andWhere(' user_id = :u_id')    
                         ->setParameter('f_id', $field_id)
