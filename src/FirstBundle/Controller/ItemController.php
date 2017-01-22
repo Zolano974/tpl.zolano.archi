@@ -91,6 +91,10 @@ class ItemController extends AbstractController  {
 
     public function editAction($id) {
 
+        $user_id = 1;
+
+        $workset_id = 1;
+
         $connected = $this->checkConnected();
         if(!($connected === true)) return $this->redirect($connected);
 
@@ -99,6 +103,7 @@ class ItemController extends AbstractController  {
         $itemDAO = $em->getRepository('FirstBundle:Item');
 
         $item = $itemDAO->find($id);
+        $old_field_id = $item->getField()->getId();
 
         $form = $this->createForm(ItemType::class, $item);
 
@@ -112,14 +117,14 @@ class ItemController extends AbstractController  {
             //si il est valide
             if ($form->isValid()) {
 
-                //on récupère le EntityManager
-                $em = $this->getDoctrine()->getManager();
+                //on récupère le EntityManage                $em = $this->getDoctrine()->getManager();
 
                 //on persiste le item
                 $em->persist($item);
-
                 //on valide les transactions
                 $em->flush();
+
+                $itemDAO->updateLinks($item, $old_field_id, $workset_id, $user_id);
 
                 //onrenvoie vers la liste
                 $url = $this->generateUrl('list_item');

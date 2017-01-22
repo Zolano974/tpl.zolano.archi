@@ -15,6 +15,7 @@ class ItemRepository extends EntityRepository
     public function fetchAllByFieldId($id){
         return $this->findBy(array('field' => $id));
     }
+
     
     public function mikbook($item_id, $user_id){
         
@@ -117,6 +118,34 @@ class ItemRepository extends EntityRepository
             }
         }
         
+        return $isFieldComplete;
+    }
+
+    //renvoie un booléen décrivant si la matière compoertant l'item en paramètre à été terminée par l'utilisateur en param, pour l'iteration en param
+    public function allFieldItemsDoneOld($field_id, $user_id, $iteration){
+
+        $query =                $this->getEntityManager()
+                                    ->getConnection()
+                                    ->createQueryBuilder()
+                                    ->select('id')
+                                    ->from('item','i')
+                                    ->where('field_id = :f')
+                                    ->setParameter('f', $field_id);
+
+        $items_same_field = $query->execute()->fetchAll();
+
+//        dump($items_same_field);die;
+
+        //on fix le booléen a TRUE
+        $isFieldComplete = true;
+
+        //si on trouve un seul item non terminé, on set à FALSE
+        foreach($items_same_field as $i){
+            if(!($this->isDone($i['id'], $user_id)[$iteration])){
+                $isFieldComplete = false;
+            }
+        }
+
         return $isFieldComplete;
     }
     
@@ -446,5 +475,146 @@ class ItemRepository extends EntityRepository
         
          
     }
-    
+
+
+    /** Fonction dédiée à modifier tous les liens en base lorsqu'on déplace un item de matière
+     * SI on déplace un item NON TERMINE vers une matière TERMINEE? alors il faut répercuter : elle n'estpar conséquent pas finie
+     * @param $old_item
+     * @param $new_item
+     */
+    public function updateLinks($new_item, $old_field_id, $workset_id, $user_id){
+
+        $this->setFieldCompleteLinks($new_item, $user_id);
+
+//        $this->setFieldUncompleteLinks($new_item, $user_id, $old_field_id);
+
+    }
+
+    /**
+     * @param $new_item
+     * @param $user_id
+     * @param $qb
+     */
+    public function setFieldCompleteLinks($new_item, $user_id)
+    {
+        //on récupère les tours pour lesquels la nouvelle matière est terminée
+        $query = $this  ->getEntityManager()
+                        ->getConnection()
+                        ->createQueryBuilder()
+                        ->select('tour_id, done')
+                        ->from('link_tour_field')
+                        ->where('field_id = :f_id')
+                        ->andWhere('done = 1')
+                        ->andWhere('user_id = :u')
+                        ->setParameter('f_id', $new_item->getField()->getId())
+                        ->setParameter('u', $user_id);
+
+        $tours_new_field_done = $query->execute()->fetchAll();
+
+        //si la mtière a été terminée dans au moins un tour
+        if (count($tours_new_field_done)) {
+
+            //pour chaque tour
+            foreach ($tours_new_field_done as $tourXfield) {
+
+                //on cherche si l'item en cours de déplacement a été terminé pour ce tour ci
+                $query_item_done = $this->getEntityManager()
+                    ->getConnection()
+                    ->createQueryBuilder()
+                    ->select('done')
+                    ->from('link_tour_item')
+                    ->where('item_id = :i_id')
+                    ->andWhere('done = 1')
+                    ->andWhere('tour_id = :t_id')
+                    ->andWhere('user_id = :u')
+                    ->setParameter('i_id', $new_item->getId())
+                    ->setParameter('t_id', $tourXfield['tour_id'])
+                    ->setParameter('u', $user_id);
+
+//                dump($query_item_done->getSQL());die;
+
+                $item_done = $query_item_done->execute()->fetchAll();
+
+                //si l'item n'a pas été coché pour ce tour (alors que la matière OUI)
+                if (!count($item_done)) {
+
+                    //ON DEOCHE LA MATIERE
+                    $query_upd = $this->getEntityManager()
+                        ->getConnection()
+                        ->createQueryBuilder()
+                        ->update('link_tour_field')
+                        ->set('done', 0)
+                        ->where('tour_id = :t')
+                        ->andWhere('field_id = :f')
+                        ->andWhere('user_id = :u')
+                        ->setParameter('t', $tourXfield['tour_id'])
+                        ->setParameter('f', $new_item->getField()->getId())
+                        ->setParameter('u', $user_id);
+
+                    $update = $query_upd->execute();
+                }
+
+
+            }
+
+
+        }
+    }
+
+    /**
+     * @param $new_item
+     * @param $user_id
+     * @param $qb
+     */
+    public function setFieldUncompleteLinks($new_item, $user_id, $old_field_id)
+    {
+        //on récupère les tours pour lesquels l'ancienne matière n'est PAS terminée
+        $query = $this  ->getEntityManager()
+            ->getConnection()
+            ->createQueryBuilder()
+            ->select(' tour_id, done, iteration')
+            ->from('link_tour_field', 'f')
+            ->leftJoin('f', 'tour', 't', 't.id= f.tour_id')
+            ->where('field_id = :f_id')
+            ->andWhere('done = 0')
+            ->andWhere('f.user_id = :u')
+            ->setParameter('f_id', $old_field_id)
+            ->setParameter('u', $user_id);
+
+        $old_field_undone = $query->execute()->fetchAll();
+
+//        dump($old_field_undone);
+
+        //pour chaque tour
+        foreach ($old_field_undone as $fieldsUndone) {
+
+            //si lamatière est cimplète
+            if($this->allFieldItemsDoneOld($old_field_id, $user_id, $fieldsUndone['iteration'])) {
+
+                //ON COCHE LA MATIERE
+                $query_upd = $this->getEntityManager()
+                    ->getConnection()
+                    ->createQueryBuilder()
+                    ->update('link_tour_field')
+                    ->set('done', 1)
+                    ->where('tour_id = :t')
+                    ->andWhere('field_id = :f')
+                    ->andWhere('user_id = :u')
+                    ->setParameter('t', $fieldsUndone['tour_id'])
+                    ->setParameter('f', $old_field_id)
+                    ->setParameter('u', $user_id);
+
+                dump($query_upd, $query_upd->getSQL());die;
+
+                $update = $query_upd->execute();
+
+            }
+
+        }
+//        die;
+
+    }
+
 }
+
+//
