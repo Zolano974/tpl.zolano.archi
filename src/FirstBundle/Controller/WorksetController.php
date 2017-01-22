@@ -46,7 +46,9 @@ class WorksetController extends AbstractController
                     ->getManager()
                     ->getRepository('FirstBundle:Workset')
                     ->fetchOneWithFields($id);
-//                    ->find($id);        
+//                    ->find($id);
+
+
         
         return $this->render('FirstBundle:Workset:view.html.twig', array(
             'workset'  => $workset,

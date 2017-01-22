@@ -472,7 +472,20 @@ class InfluxRepository{
                 "fillAlphas"            => 0.5,
                 "lineAlpha"             => 0.5,
             );
-
+//            "listeners": [{
+//                            "event": "init",
+//                "method": function(event) {
+//                                var chart = event.chart;
+//                                for(var x = 0; x < chart.graphs.length; x++) {
+//                                    var graph = chart.graphs[x];
+//                                    var graphSum = 0;
+//                                    for(var i = 0; i < chart.dataProvider.length; i++) {
+//                                        graphSum += chart.dataProvider[i][graph.valueField];
+//                                    }
+//                    if (graphSum == 0)
+//                        graph.visibleInLegend = false;
+//                  }
+//                }
             $json_params->graphs[] = $graph;
         }
 

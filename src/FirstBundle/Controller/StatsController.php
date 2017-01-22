@@ -39,15 +39,16 @@ class StatsController extends AbstractController {
 
 
         $itemDAO = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('FirstBundle:Item');
+                        ->getManager()
+                        ->getRepository('FirstBundle:Item');
 
         try{
 
 
-            $data_done = $itemDAO->loadWorksetData($user_id, $workset, $begin_date, $end_date);
+            $data_done = $itemDAO->loadWorksetData($user_id, $workset, $begin_date, $end_date, false);
 
-            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true, 'hour');
+//            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true, 'hour');
+            $data_mkb = $itemDAO->loadWorksetData($user_id, $workset, '2016-12-01', '2017-12-01', false, 'month');
         }
         catch(Exception $e){
             dump($e->getMessage());
