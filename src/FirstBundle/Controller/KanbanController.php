@@ -102,8 +102,6 @@ class KanbanController extends AbstractController
         ));        
         
         return $this->redirect($url);
-        
-        
                 
     }
     

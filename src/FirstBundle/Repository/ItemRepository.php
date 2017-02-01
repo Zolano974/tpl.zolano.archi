@@ -333,7 +333,7 @@ class ItemRepository extends EntityRepository
                 break;
             case 'month' :
   
-                $agregation = '4w';
+                $agregation = '31d';
                 break;
 
         }
