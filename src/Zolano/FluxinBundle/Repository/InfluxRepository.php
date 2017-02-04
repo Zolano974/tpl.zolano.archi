@@ -409,7 +409,7 @@ class InfluxRepository{
             'marginLeft'        => 90,
             'useGraphSettings'  => true,
             "equalWidths"       => true,
-//            "periodValueText"   => "[[value.sum]]",
+            "periodValueText"   => "[[value.sum]]",
             "valueAlign"        => "center",
             "valueText"         =>  "[[value]]",
             "valueWidth"        => 100,

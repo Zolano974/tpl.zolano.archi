@@ -56,9 +56,19 @@ class StatsRepository{
 
         //Field Stats
         $fields_stats = array();
+        $inter = [];
         foreach($workset->getFields() as $field){
 //            dump($field);die;
-            $fields_stats[$field->getId()] = $this->getFieldStatData($field, $iteration, $user_id);
+            $stats = $this->getFieldStatData($field, $iteration, $user_id);
+            $inter[$stats['percentage'] . '-'. $field->getId()] = array(
+                'field_id'  => $field->getId(),
+                'stats'     => $stats,
+            );
+        }
+        //on trie par % croissant
+        ksort($inter, SORT_NUMERIC);
+        foreach($inter as $stats){
+            $fields_stats[$stats['field_id']] = $stats['stats'];
         }
 
         //workset_stats

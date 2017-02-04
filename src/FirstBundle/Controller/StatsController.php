@@ -46,7 +46,7 @@ class StatsController extends AbstractController {
         try{
 
 
-            $data_done = $itemDAO->loadWorksetData($user_id, $workset, $begin_date, $end_date, false);
+            $data_done = $itemDAO->loadWorksetData($user_id, $workset, '2017-01-08', $end_date, false);
 
 //            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true, 'hour');
             $data_mkb = $itemDAO->loadWorksetData($user_id, $workset, '2017-01-01', '2017-06-01', false, 'month');
