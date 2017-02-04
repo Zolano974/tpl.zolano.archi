@@ -277,6 +277,8 @@ class ItemRepository extends EntityRepository
 //        $date = date("Y-m-d");
         $date = date("Y-m-d",mktime(0,0,0,date("m"), date("d")+2, date("Y")));
         $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")-15, date("Y")));
+//        $date = '2017-01-01';
+//        $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")+10, date("Y")));;
 
         //si les dates ne sont pas renseignées, on met les bornes par défaut (de ya un mois à AJD)
         if($begin === null){ $begin = $last_month; }
@@ -322,18 +324,23 @@ class ItemRepository extends EntityRepository
             case 'hour' :
     
                 $agregation = '1h';
+                $groupby =  " GROUP BY time($agregation)";
                 break;
             case 'day' :
          
                 $agregation = '1d';
+                $groupby =  " GROUP BY time($agregation)";
                 break;
             case 'week' :
   
                 $agregation = '1w';
+                $groupby =  " GROUP BY time($agregation)";
                 break;
             case 'month' :
   
+//                $agregation = '730h';
                 $agregation = '31d';
+                $groupby =  " GROUP BY time($agregation, -7d)";
                 break;
 
         }
@@ -348,8 +355,7 @@ class ItemRepository extends EntityRepository
         //on crée la condition sur matiere uniquement si différent de -1
         $where_condition .= ($field_id == null) ? "" : " AND field_id = '$field_id'";
         
-        $groupby =  " GROUP BY time($agregation)";
-        
+
         $influx = $this->getInfluxRepository();
         
         $brute_data = $influx->selectMetrics("count(done)", $collection, $begin, $end, $where_condition, $groupby, null);

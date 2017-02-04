@@ -29,6 +29,7 @@ class StatsController extends AbstractController {
 
         $request = Request::createFromGlobals();
 
+//        $begin_date = $request->request->get('begin_date', '2017-01-01');
         $begin_date = $request->request->get('begin_date', null);
         $end_date = $request->request->get('end_date', null);
 
@@ -48,7 +49,7 @@ class StatsController extends AbstractController {
             $data_done = $itemDAO->loadWorksetData($user_id, $workset, $begin_date, $end_date, false);
 
 //            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true, 'hour');
-            $data_mkb = $itemDAO->loadWorksetData($user_id, $workset, '2017-01-01', '2017-12-31', false, 'month');
+            $data_mkb = $itemDAO->loadWorksetData($user_id, $workset, '2017-01-01', '2017-06-01', false, 'month');
         }
         catch(Exception $e){
             dump($e->getMessage());

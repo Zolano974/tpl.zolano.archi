@@ -144,12 +144,12 @@ class InfluxRepository{
         if($database === null) $database = $this->config['idb_dbname'];    
         
          //on retire le décalage avec GMT aux bornes temporelles pour bien avoir les données de minuit à minuit
-//        $begin = $this->addGMToffset($begin . " 00:00:00", true);
-//        $end = $this->addGMToffset($end . " 00:00:00", true);
+        $begin = $this->addGMToffset($begin . " 00:00:00", true);
+        $end = $this->addGMToffset($end . " 00:00:00", true);
 
         $where_condition = ($where !== "") ? " AND $where" : "" ;
 
-        $query = "SELECT $fields FROM $collection WHERE time > '$begin' AND time <= '$end' $where_condition $groupby";
+        $query = "SELECT $fields FROM $collection WHERE time >= '$begin' AND time <= '$end' $where_condition $groupby";
 
 //        dump($database);
 //        dump($query);
@@ -405,15 +405,16 @@ class InfluxRepository{
 
         $json_params->type = "serial";
         $json_params->theme = "light";
-//        $json_params->legend = array(
-//            'marginLeft'        => 110,
-//            'useGraphSettings'  => true,
-//            "equalWidths"       => false,
-//            "periodValueText"   => "total: [[value.sum]]",
-//            "valueAlign"        => "left",
-//            "valueText"         =>  "[[value]] ([[percents]]%)",
-//            "valueWidth"        => 100
-//        );
+        $json_params->legend = array(
+            'marginLeft'        => 90,
+            'useGraphSettings'  => true,
+            "equalWidths"       => true,
+//            "periodValueText"   => "[[value.sum]]",
+            "valueAlign"        => "center",
+            "valueText"         =>  "[[value]]",
+            "valueWidth"        => 100,
+//            "valueFunction"     => "hideZeroValues('')"
+        );
         $json_params->chartScrollbar = array(
             'enabled'           => true,
             'scrollbarHeight'   => 20,
@@ -461,7 +462,9 @@ class InfluxRepository{
             $graph = array(
                 "valueAxis"             => "v1",
                 "bullet"                => "round",
-                "balloonText"           => $chart->valueField . " : [[value]]",
+//                "balloonText"           => $chart->valueField . " : [[value]]",
+                "balloonText"           => ("[[value]]" == "0") ? $chart->valueField . " : [[value]]" : "" ,
+//                "balloonText"           => (strpos("[[value]]","0") != false) ? $chart->valueField . " : [[value]]" : "" ,
                 "title"                 => $chart->title,
 //                "type"                  => "smoothedLine",
                 "bulletBorderThickness" => 0.5,
