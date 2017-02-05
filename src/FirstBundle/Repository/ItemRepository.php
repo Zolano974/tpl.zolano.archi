@@ -358,7 +358,7 @@ class ItemRepository extends EntityRepository
 
         $influx = $this->getInfluxRepository();
         
-        $brute_data = $influx->selectMetrics("count(done)", $collection, $begin, $end, $where_condition, $groupby, null);
+        $brute_data = $influx->selectMetrics("sum(done)", $collection, $begin, $end, $where_condition, $groupby, null);
         
         $data = $influx->Influx2Array($brute_data);
         

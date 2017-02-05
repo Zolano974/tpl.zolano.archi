@@ -154,8 +154,8 @@
 /*}*/
 
 .chartdiv{
-    border:1px solid #333;
-    min-height:600px;
+    /*border:1px solid #333;*/
+    min-height:450px;
 }
 
 .piechartdiv{

@@ -6,11 +6,16 @@ class remindMe
 {
 
     public static function areWeOnPreprod(){
-//        dump($_SERVER);
-        if(strpos($_SERVER['HTTP_REFERER'], 'preprod')){
-            return true; //we are on preprod !
+//        dump($_SERVER);die;
+        if(strpos($_SERVER['REQUEST_URI'], 'preprod')){
+//            dump('preprod');die;
+            return true; //we are on préprod !
         }
-        else return false; // we are on prod
+
+        else {
+//            dump('prod');die;
+            return false; // we are on prod
+        }
     }
 
     public static function amIConnected(){

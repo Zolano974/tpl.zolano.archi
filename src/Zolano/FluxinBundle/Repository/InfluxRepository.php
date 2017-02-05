@@ -63,6 +63,7 @@ class InfluxRepository{
             'idb_pwd'       => '12d1c5e1c1c39c557cb57819338efb80',
             'idb_host'      => '137.74.197.5',
             'idb_dbname'    => $dbname,
+
         );
 
 
@@ -322,7 +323,7 @@ class InfluxRepository{
         $json_params->type = "serial";
         $json_params->theme = "light";
         $json_params->legend = array(
-            'marginLeft'        => 110,
+            'marginLeft'        => 20,
             'useGraphSettings'  => true,
         );
         $json_params->chartScrollbar = array(
