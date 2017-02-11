@@ -50,13 +50,17 @@ class StatsController extends AbstractController {
 
 //            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true, 'hour');
             $data_mkb = $itemDAO->loadWorksetData($user_id, $workset, '2017-01-01', '2017-06-01', false, 'month');
+
+            $statsDao = new StatsRepository($this->getDoctrine()->getManager());
+
+            $data_notes = $statsDao->getNotesStatsData($user_id, $workset_id, '2017-01-01', $end_date,'day');
         }
         catch(Exception $e){
             dump($e->getMessage());
         }
 
 
-//        dump($data_done);die;
+//        dump($data_notes);die;
 
         return $this->render('FirstBundle:Stats:curve.html.twig', array(
             'workset'               => $workset,
@@ -68,6 +72,9 @@ class StatsController extends AbstractController {
             'series_mkb'           => $data_mkb['series'],
             'chart_data_mkb'       => $data_mkb['chart_data'],
             'chart_params_mkb'     => $data_mkb['chart_params'],
+            //stats
+            'chart_data_note'      =>$data_notes['chart_data'],
+            'chart_params_note'    =>$data_notes['chart_params'],
         ));
 
     }
@@ -199,6 +206,8 @@ class StatsController extends AbstractController {
         if ($request->isXmlHttpRequest()) {
 
             $type = $request->request->get('type', 'cas');
+
+//            print_r($request->request);die;
 
             $note = $request->request->get('note', null);
 

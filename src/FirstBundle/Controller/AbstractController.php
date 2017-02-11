@@ -16,6 +16,9 @@ class AbstractController extends Controller
 {
 
 
+    /** key 92700441c55096de7b154c1eb4c74b53ba25264f2580df4d846c995ce2ec7eb3
+     * @return mixed
+     */
     public function authAction(){
 
 
@@ -29,7 +32,7 @@ class AbstractController extends Controller
             $login = $request->request->get('login');
             $pwd = $request->request->get('pwd');
 
-            if($login == "Sophie" && $pwd == "kafrine2sb0!s"){
+            if($login == "Sophie" && $pwd == "wxcvbn"){
 //                dump($login, $pwd, "success");
 
                 $session->set('connected', true);
