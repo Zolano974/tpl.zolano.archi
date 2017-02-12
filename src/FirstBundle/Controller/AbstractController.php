@@ -15,10 +15,14 @@ use \Symfony\Component\Translation\Exception\NotFoundResourceException;
 class AbstractController extends Controller
 {
 
+    //
+    protected $key;
+
 
     public function authAction(){
 
 
+//        $key = (isset(Request::createFromGlobals()->getMethod()) && true) ?  " 92700441c55096de7b154c1eb4c74b53ba25264f2580df4d846c995ce2ec7eb3" : null ;
 
         $request = Request::createFromGlobals();
 

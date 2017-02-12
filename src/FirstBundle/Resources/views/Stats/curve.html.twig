@@ -21,7 +21,7 @@
     <div class="row graph-container">
 
 
-        <div class="panel col-xs-12 col-md-12 col-lg-12">
+        <div class="panel col-xs-11 col-md-11 col-lg-11">
             <div class="row">
                 <label>Par Jour</label>
             </div>
@@ -33,9 +33,15 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div id="graph_legend" class="col-xs-12 push-top" style="border:1px solid black; min-height: 80px;">
+
+                </div>
+
+            </div>
         </div>
 
-        <div class="panel col-xs-12 col-md-12 col-lg-12">
+        <div class="panel col-xs-11 col-md-11 col-lg-11">
             <div class="row">
                 <label>Par Mois</label>
             </div>
@@ -45,6 +51,12 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div id="mkb_legend" class="col-xs-12 push-top" style="border:1px solid black; min-height: 80px;">
+
+                </div>
+
             </div>
         </div>
 
@@ -72,9 +84,14 @@
             console.log(chart_data_done);
             console.log(chart_params_done);
 
-            chart_params_done.legend.enabled = false;
-            chart_params_mkb.legend.enabled = false;
-
+            chart_params_done.legend.enabled = true;
+            chart_params_done.legend.divId = "graph_legend";
+            chart_params_done.legend.width = 50;
+            chart_params_done.legend.maxColumns = 5;
+            chart_params_mkb.legend.enabled = true;
+            chart_params_mkb.legend.divId = "mkb_legend";
+            chart_params_mkb.legend.width =  50;
+            chart_params_mkb.legend.maxColumns = 5;
 
             //CONTRUCTION DU GRAPHE POUR LES ITEMS DONE
                 //on crée l'objet chart avec les paramètres contenus dans la réponse ajax
