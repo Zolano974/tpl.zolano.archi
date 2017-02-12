@@ -15,7 +15,7 @@
 
         {#<h1><a href="{{ path('test') }}" class="globe">zobby</a></h1>#}
         <div class='row'>
-            <div id="data" class="panel col-md-12" >
+            <div id="data" class="panel col-md-12 col-xs-12" >
 
                 {#      HEADER      #}
                 <div class="panel-heading panelH">
@@ -32,7 +32,7 @@
                  {#      LISTE      #}
                 <div class="panel-body" >
                         <!--    #table1    -->
-                    <table  id="items_table" class="table-responsive table col-md-12">
+                    <table  id="items_table" class="table-responsive table col-md-12 col-xs-12">
 
                     {% for field_id, row in data %}
                         {% set field = row.field %}
@@ -42,11 +42,11 @@
                         <tr class="push-top">
 
                             <!-- CASE DE LA MATIERE-->
-                            <th id="mat_{{ field_id }}" class="field_td col-md-12 pointer" onclick="deplier({{field_id}})" style="background-color:{{ field.color }}">
-                                <div class="col-md-11">
-                                    <span class="col-md-3">{{ field.name }}</span>
+                            <th id="mat_{{ field_id }}" class="field_td col-md-12 col-xs-12 pointer" onclick="deplier({{field_id}})" style="background-color:{{ field.color }}">
+                                <div class="col-md-11 col-xs-11">
+                                    <span class="col-md-3 col-xs-3">{{ field.name }}</span>
                                     <small style="margin-left:5%" id="thumbsups-{{ field_id }}">
-
+                                        <span class="glyphicon glyphicon-thumbs-up" ></span>
                                          {#      AFFICHAGE DES POUCES/TOUR      #}
                                         {%for i in 0..field_nb_tours %}
                                             {% if i > 0%}
@@ -88,7 +88,7 @@
                                 {% set class = "" %}
                             {% endif %}
                             <tr>
-                                <td id="f-{{ field_id }}_i-{{ item.id }}" class="col-md-12 check_item {{ class }} subfield-{{ field_id }}" style="display:none">
+                                <td id="f-{{ field_id }}_i-{{ item.id }}" class="col-md-12 col-xs-12 check_item {{ class }} subfield-{{ field_id }}" style="display:none">
                                     <span class="col-md-8 col-xs-8 item_body">
                                         #{{ item.number }} &nbsp;&nbsp;
                                         {{item.name}}

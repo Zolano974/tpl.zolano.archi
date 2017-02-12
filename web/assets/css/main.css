@@ -1,8 +1,21 @@
 
 /* Classes générales */
 
+.wrap{
+    background-color: #d3e1ed;
+}
 .content{
     margin-top: 5%;
+    background-color: #e4eef7;
+}
+
+#data{
+    background-color: #e4eef7;
+}
+
+.footer{
+    background-color: #33cccc;
+    margin-bottom: 0px;
 }
 
 .list .glyphicon{
@@ -29,8 +42,10 @@
 */
 
 .navbar-ecg{
-    background-image: url("../img/ecg-rouge-thin.png") !important;
+    /*background-image: url("../img/ecg-blue-thin.jpg") !important;*/
+    background-image: url("../img/ecg-line-white.png") !important;
     background-repeat: repeat-x !important;
+    /*background-color: #080b74 !important;*/
 
 }
 .navbar-ecg a{
@@ -120,6 +135,7 @@
     margin-top: 15px;
     margin-bottom: 15px;
     padding-top: 10px;
+    box-shadow: 5px 5px 3px #888888;
     
 }
 
@@ -131,31 +147,23 @@
     min-height: 400px;
     max-height: 400px;
     overflow-y: scroll;
-    background-color: #DBECFD;
+    background-color: #c1c2f3;
 }
 
 /** PARTIE DEDIEE AUX STATS */
 
-/*!*SUR TABLETTE *!*/
-/*@media screen and (max-width: 800px) {*/
-    /*.chartdiv{*/
-        /*!*border:1px solid black;*!*/
-        /*min-height:200px;*/
-    /*}*/
-
-/*}*/
-/*!* SUR PC *!*/
-/*@media screen and (min-width: 800px) {*/
-    /*.chartdiv{*/
-        /*!*border:1px solid black;*!*/
-        /*min-height:500px;*/
-    /*}*/
-
-/*}*/
 
 .chartdiv{
-    border:1px solid #333;
+    border:1px solid #303285;
+    border-radius: 5px;
     min-height:400px;
+    background-color: #fff;
+    box-shadow: 5px 5px 3px #888888;
+}
+
+.chartlegend{
+    /*border:1px solid black;*/
+    min-height: 80px;
 }
 
 .piechartdiv{
@@ -170,7 +178,15 @@
     margin-left:10px;
     margin-right:10px;
 
+    background-color: #e4eef7;
+}
 
+/*.graph-container panel{*/
+    /*background-color: #e4eef7 !important;*/
+/*}*/
+
+.panel-custom{
+    background-color: #e4eef7 !important;
 }
 
 
@@ -246,7 +262,7 @@
 
 
 .bookmark{
-
+    background-color: white;
 }
 
 .bookmark-filled{
