@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -22,6 +23,12 @@ class NoteType extends AbstractType
     {
         $builder
             ->add('note', IntegerType::class)
+            ->add('type', ChoiceType::class, array(
+                'choices' => array(
+                    'Dossiers Cliniques' => 'cas',
+                    'Questions Isolées' => 'qi',
+                )
+            ))
             ->add('field', EntityType::class, array(
                 'class'         =>'FirstBundle:Field',
                 'choice_label'  => 'name',

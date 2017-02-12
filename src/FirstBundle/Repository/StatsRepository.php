@@ -229,6 +229,112 @@ class StatsRepository{
 
     }
 
+    public function getNotesStatsData($user_id, $workset_id, $begin, $end, $aggreg = 'day'){
+
+        $influx = $this->getInfluxRepository();
+
+        $series = $this->fetchNotesData($user_id, $workset_id, $begin, $end, $aggreg);
+
+//        dump($series);die;
+
+        $series = $influx->formatSeries($series);
+
+        //on formate les données + convert JSON pour les rendre exploitables par les graphes AmCharts
+        $chart_data = $influx->formatData4AmCharts($series);
+
+//        dump($chart_data);die;
+
+        //on obtient un objet JSON représentant les paramètres du graphe AmCharts, appliquables directement
+        $chart_params = $influx->getAmChartsJsonParams($series, 'linear');
+
+        //on ordonne le résultat dans un structure à 4 champs
+        $output = array(
+            'series'        => $series,
+            'chart_data'    => $chart_data,
+            'chart_params'  => $chart_params,
+        );
+
+
+        return $output;
+
+    }
+
+    public function fetchNotesData($user_id, $workset_id, $begin, $end, $aggreg){
+
+        //on assure les valeurs de BEGIN et END
+        $date = date("Y-m-d",mktime(0,0,0,date("m"), date("d")+2, date("Y")));
+        $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")-15, date("Y")));
+
+        //si les dates ne sont pas renseignées, on met les bornes par défaut (de ya un mois à AJD)
+        if($begin === null){ $begin = $last_month; }
+        if($end === null){ $end = $date; }
+
+        $series = array(
+            'Dossiers' => $this->getNotesAggregate($begin,$end, $user_id, $workset_id, 'cas', $aggreg),
+            'Questions Isolées' => $this->getNotesAggregate($begin,$end, $user_id, $workset_id, 'qi', $aggreg),
+        );
+
+        return $series;
+    }
+
+    private function getNotesAggregate($begin,$end,$user_id, $workset_id, $type, $aggreg){
+
+        $agregation = "day";
+
+        switch($aggreg){
+            case 'hour' :
+
+                $agregation = '1h';
+                $groupby =  " GROUP BY time($agregation)";
+                break;
+            case 'day' :
+
+                $agregation = '1d';
+                $groupby =  " GROUP BY time($agregation)";
+                break;
+            case 'week' :
+
+                $agregation = '1w';
+                $groupby =  " GROUP BY time($agregation)";
+                break;
+            case 'month' :
+
+//                $agregation = '730h';
+                $agregation = '31d';
+                $groupby =  " GROUP BY time($agregation, -7d)";
+                break;
+
+        }
+
+        $collection = "notes" ;
+
+        //on crée la condition sur matiere uniquement si différent de -1
+        $where_condition = " workset_id = '$workset_id'";
+
+        $where_condition .= " AND user_id = '$user_id'";
+
+        //on crée la condition sur matiere uniquement si différent de -1
+        $where_condition .=  " AND type = '$type'";
+
+
+        $influx = $this->getInfluxRepository();
+
+
+        $groupby = " GROUP BY time(30m) ";
+        $brute_data = $influx->selectMetrics("mean(note)", $collection, $begin, $end, $where_condition, $groupby, null);
+//        $brute_data = $influx->selectMetrics("time, note", $collection, $begin, $end, $where_condition, "", null);
+
+        dump($brute_data);
+
+        die;
+
+        $data = $influx->Influx2Array($brute_data);
+
+//        dump($data);
+
+        return $data;
+    }
+
     public function getLastIteration($workset_id, $user_id){
         $qb = $this->_em->getConnection()->createQueryBuilder();
 
@@ -248,7 +354,7 @@ class StatsRepository{
      */
     private function getInfluxRepository(){
 
-        return  new InfluxRepository($this->getEntityManager());
+        return  new InfluxRepository($this->_em );
 
 
     }

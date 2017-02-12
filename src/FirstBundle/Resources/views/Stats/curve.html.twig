@@ -21,7 +21,7 @@
     <div class="row graph-container">
 
 
-        <div class="panel col-xs-11 col-md-11 col-lg-11">
+        <div class="panel col-xs-12 col-md-12 col-lg-12">
             <div class="row">
                 <label>Par Jour</label>
             </div>
@@ -60,6 +60,22 @@
             </div>
         </div>
 
+        <hr>
+
+        <div class="panel col-xs-12 col-md-12 col-lg-12">
+            <div class="row">
+                <label>Notes</label>
+            </div>
+            <div class="row">
+                <div id="graph" class="push_top">
+                    <div id="chartdiv_note" class="chartdiv">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
 
 
@@ -80,6 +96,11 @@
             var chart_data_done = {{chart_data_done | json_encode | raw }};
             var chart_params_mkb= {{chart_params_mkb | json_encode | raw}};
             var chart_data_mkb = {{chart_data_mkb | json_encode | raw }};
+            chart_params_mkb.legend.enabled = false;
+
+
+            var chart_params_note= {{chart_params_note | json_encode | raw}};
+            var chart_data_note = {{chart_data_note | json_encode | raw }};
 
             console.log(chart_data_done);
             console.log(chart_params_done);
@@ -113,6 +134,18 @@
                 chart_mkb.dataProvider = generateChartData(chart_data_mkb);
 
                 chart_mkb.validateData();
+
+                //on zoom sur l'échelle globale du graphe
+                zoomChart(chart_mkb);
+
+            //CONTRUCTION DU GRAPHE POUR LES ITEMS MIKBOOKES
+                //on crée l'objet chart avec les paramètres contenus dans la réponse ajax
+                var chart_note = AmCharts.makeChart("chartdiv_note", chart_params_note);
+
+                //on donne les données à afficher au chart, après la moulinette de mise en forme
+                chart_note.dataProvider = generateChartData(chart_data_note);
+
+                chart_note.validateData();
 
                 //on zoom sur l'échelle globale du graphe
                 zoomChart(chart_mkb);

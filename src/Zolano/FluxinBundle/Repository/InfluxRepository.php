@@ -151,10 +151,10 @@ class InfluxRepository{
         $where_condition = ($where !== "") ? " AND $where" : "" ;
 
         $query = "SELECT $fields FROM $collection WHERE time >= '$begin' AND time <= '$end' $where_condition $groupby";
+//
+//        dump($database); dump($query);
 
-//        dump($database);
-//        dump($query);
-        
+//
         return $this->selectQueryFromDatabase($database, $query);
     }
     
@@ -258,12 +258,12 @@ class InfluxRepository{
      * @param $series       Données des KPI du graphe, servant de base pour la constitution du paramétrage (OUTPUT de formatSeries() )
      * @return JSON         Objet JSON de configuration du graphe AmChart dédié à tracer ces données
      */
-    public function getAmChartsJsonParams($series){
+    public function getAmChartsJsonParams($series, $type='stacked'){
 
         $params = $this->formatParams4amCharts($series);
 
 //        $json_params = $this->generateJsonLineParams4amcharts($params, $series);
-        $json_params = $this->generateJsonStackedParams4amcharts($params, $series);
+        $json_params = ($type === 'stacked') ? $this->generateJsonStackedParams4amcharts($params, $series) : $json_params = $this->generateJsonLineParams4amcharts($params, $series);
 
         return $json_params;
 
@@ -275,7 +275,7 @@ class InfluxRepository{
      */
     private function formatParams4amCharts($series){
 
-        $colors = $series['colors'];
+        $colors = (isset($series['colors']) && is_array($series['colors'])) ? $series['colors'] : ['#333333','#ff6600'];
 
         $params = array();
 
@@ -286,7 +286,7 @@ class InfluxRepository{
             $axis = new \stdClass();
             $axis->offset = $axis_offset;
             $axis->gridAlpha = 0;
-            $axis->axisColor = $colors[$head];
+            $axis->axisColor = (isset($colors[$head])) ? $colors[$head] : $colors[$color_index];
             $axis->axisThickness = 1;
 
             $chart = new \stdClass();
@@ -303,6 +303,8 @@ class InfluxRepository{
             );
 
             $axis_offset += 30;
+
+            $color_index++;
 
         }
         //        dump($params);
@@ -439,7 +441,7 @@ class InfluxRepository{
             'parseDates'        => true,
             "startOnAxis"       => true,
             'axisColor'         => "#DADADA",
-            'minPeriod'         => "hh",
+            'minPeriod'         => "ss",
             'twoLineMode'       => true,
             'minorGridEnabled'  => true,
             "gridAlpha"         => 0.07,
@@ -530,7 +532,8 @@ class InfluxRepository{
 
         $date_output = ($GMToffset) ? $this->addGMToffset($date_origin) : $date_origin ;
 
-        return $date_output;
+//        return $date_output;
+        return $date;
     }
 
     /** Ajoute les heures d'écart avec le fuseau GMT
