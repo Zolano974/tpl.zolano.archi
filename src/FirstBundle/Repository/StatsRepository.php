@@ -299,8 +299,8 @@ class StatsRepository{
                 break;
             case 'month' :
 
-//                $agregation = '730h';
-                $agregation = '31d';
+                $agregation = '725h';
+//                $agregation = '31d';
                 $groupby =  " GROUP BY time($agregation, -7d)";
                 break;
 

@@ -338,9 +338,9 @@ class ItemRepository extends EntityRepository
                 break;
             case 'month' :
   
-//                $agregation = '730h';
-                $agregation = '31d';
-                $groupby =  " GROUP BY time($agregation, -7d)";
+                $agregation = '730h';
+//                $agregation = '31d';
+                $groupby =  " GROUP BY time($agregation, -19d)";
                 break;
 
         }
