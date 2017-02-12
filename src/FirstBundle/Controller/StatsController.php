@@ -216,7 +216,6 @@ class StatsController extends AbstractController {
             $field_id = $request->request->get('field_id', null);
 
             $itemDAO = $this->getDoctrine()
-                ->getManager()
                 ->getRepository('FirstBundle:Item');
 
             //trigger une insertion influxDB

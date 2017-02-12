@@ -275,7 +275,7 @@ class InfluxRepository{
      */
     private function formatParams4amCharts($series){
 
-        $colors = (isset($series['colors']) && is_array($series['colors'])) ? $series['colors'] : ['#333333','#ff6600'];
+        $colors = (isset($series['colors']) && is_array($series['colors'])) ? $series['colors'] : ['#00782d','#4a60d7'];
 
         $params = array();
 

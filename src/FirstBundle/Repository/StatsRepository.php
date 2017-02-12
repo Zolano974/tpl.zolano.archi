@@ -320,13 +320,13 @@ class StatsRepository{
         $influx = $this->getInfluxRepository();
 
 
-        $groupby = " GROUP BY time(30m) ";
+//        $groupby = " GROUP BY time(1d) ";
         $brute_data = $influx->selectMetrics("mean(note)", $collection, $begin, $end, $where_condition, $groupby, null);
 //        $brute_data = $influx->selectMetrics("time, note", $collection, $begin, $end, $where_condition, "", null);
 
-        dump($brute_data);
+//        dump($brute_data);
 
-        die;
+//        die;
 
         $data = $influx->Influx2Array($brute_data);
 

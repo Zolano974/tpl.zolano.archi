@@ -424,8 +424,9 @@ class ItemRepository extends EntityRepository
             "points" => [
                 [
                     "measurement" => "notes",
+//                        "note" => intval($note),
                     "fields"    => [
-                        "note" => $note,
+                        "note" => intval($note),
                     ]
                 ],
             ],
