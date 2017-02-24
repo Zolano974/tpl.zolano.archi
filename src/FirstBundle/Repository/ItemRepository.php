@@ -276,7 +276,7 @@ class ItemRepository extends EntityRepository
         //on assure les valeurs de BEGIN et END
 //        $date = date("Y-m-d");
         $date = date("Y-m-d",mktime(0,0,0,date("m"), date("d")+2, date("Y")));
-        $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")-15, date("Y")));
+        $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")-40, date("Y")));
 //        $date = '2017-01-01';
 //        $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")+10, date("Y")));;
 

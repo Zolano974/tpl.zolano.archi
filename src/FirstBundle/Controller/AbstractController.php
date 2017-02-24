@@ -19,7 +19,7 @@ class AbstractController extends Controller
     protected $key;
 
 
-    /** key 92700441c55096de7b154c1eb4c74b53ba25264f2580df4d846c995ce2ec7eb3
+    /**
      * @return mixed
      */
     public function authAction(){
