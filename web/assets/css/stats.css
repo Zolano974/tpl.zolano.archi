@@ -1,13 +1,13 @@
 
 .shadow-box{
--moz-box-shadow: 2px 1px 3px 1px #979797;
--webkit-box-shadow: 2px 1px 3px 1px #979797;
--o-box-shadow: 2px 1px 3px 1px #979797;
-box-shadow: 2px 1px 3px 1px #979797;
-filter:progid:DXImageTransform.Microsoft.Shadow(color=#979797, Direction=116, Strength=3);
--moz-border-radius: 2px;
--webkit-border-radius: 2px;
-border-radius: 2px;
+    -moz-box-shadow: 2px 1px 3px 1px #979797;
+    -webkit-box-shadow: 2px 1px 3px 1px #979797;
+    -o-box-shadow: 2px 1px 3px 1px #979797;
+    box-shadow: 2px 1px 3px 1px #979797;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#979797, Direction=116, Strength=3);
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
 }
 
 .transition{
