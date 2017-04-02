@@ -45,14 +45,14 @@ class StatsController extends AbstractController {
 
         try{
 
-
+            //on récupère les données de stats pour les items par jour
             $data_done = $itemDAO->loadWorksetData($user_id, $workset, $begin_date, $end_date, false);
 
-//            $data_mkb = $itemDAO->loadFieldsData($user_id, $workset->getId(), array(null), $begin_date, $end_date, true, 'hour');
+            //on récupère les données de stats pour les items par mois
             $data_mkb = $itemDAO->loadWorksetData($user_id, $workset, '2017-01-01', '2017-06-01', false, 'month');
 
             $statsDao = new StatsRepository($this->getDoctrine()->getManager());
-
+            //on récupère les données de stats pour les notes
             $data_notes = $statsDao->getNotesStatsData($user_id, $workset_id, $begin_date, $end_date,'day');
         }
         catch(Exception $e){
