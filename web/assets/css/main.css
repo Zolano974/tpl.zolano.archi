@@ -122,8 +122,10 @@ body.side-menu-active .side-menu-class-opened{
 .navbar-ecg{
     /*background-image: url("../img/ecg-blue-thin.jpg") !important;*/
     /*background-image: url("../img/ecg-line-white.png") !important;*/
+    background-image: url("../img/ecg-black.png") !important;
+    opacity: 0.9;
     /*background-image: url("../img/ecg-rouge-thin.png") !important;*/
-    background-repeat: repeat-x !important;
+    /*background-repeat: repeat-x !important;*/
     /*background-color: #080b74 !important;*/
 
 }
