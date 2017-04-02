@@ -357,7 +357,7 @@ class InfluxRepository{
             'id'                => 'v1',
             'axisColor'         => (isset($params[0]['axis'])) ? $params[0]['axis']->axisColor : "#333",
             'axisThickness'     => 2,
-            'gridAlpha'         => 0,
+            'gridAlpha'         => 0.2,
             'axisAlpha'         => 1,
             'position'          => 'left',
             'precision'         => 3,
@@ -372,13 +372,14 @@ class InfluxRepository{
                 "valueAxis"             => "v1",
                 "bullet"                => "round",
                 "title"                 => $chart->title,
-                "type"                  => "smoothedLine",
+//                "type"                  => "step",
+                "type"                  => "line",
                 "bulletBorderThickness" => 1,
                 "lineColor"             => $axis->axisColor,
                 "legendColor"           => $axis->axisColor,
                 "hideBulletsCount"      => 30,
                 "valueField"            => $chart->valueField,
-                "fillAlphas"            => 0,
+                "fillAlphas"            => 0.1,
             );
 
             $json_params->graphs[] = $graph;

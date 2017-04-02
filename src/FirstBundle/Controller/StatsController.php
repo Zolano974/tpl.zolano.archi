@@ -53,7 +53,7 @@ class StatsController extends AbstractController {
 
             $statsDao = new StatsRepository($this->getDoctrine()->getManager());
 
-            $data_notes = $statsDao->getNotesStatsData($user_id, $workset_id, '2017-01-01', $end_date,'day');
+            $data_notes = $statsDao->getNotesStatsData($user_id, $workset_id, $begin_date, $end_date,'day');
         }
         catch(Exception $e){
             dump($e->getMessage());
