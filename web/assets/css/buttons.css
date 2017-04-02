@@ -1,0 +1,76 @@
+
+/*GHOST DARK BLUE */
+.btn-ghost-darkblue{
+    transition: 0.4s;
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #ffffff;
+    border: 1px solid #002a80;
+    color: #002a80;
+
+}
+
+.btn-ghost-darkblue:hover, btn-ghost-darkblue:focus{
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #002a80;
+    border: 1px solid #ffffff;
+    color: #ffffff !important;
+}
+
+/*GHOST BLOOD */
+.btn-ghost-blood{
+    transition: 0.4s;
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #ffffff;
+    border: 1px solid #870000;
+    color: #870000;
+
+}
+
+.btn-ghost-blood:hover, btn-ghost-blood:focus{
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #870000;
+    border: 1px solid #ffffff;
+    color: #ffffff !important;
+}
+
+/*GHOST ORANGE */
+.btn-ghost-orange{
+    transition: 0.4s;
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #ffffff;
+    border: 1px solid #d29003;
+    color: #d29003;
+
+}
+
+.btn-ghost-orange:hover, btn-ghost-orange:focus{
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #d29003;
+    border: 1px solid #ffffff;
+    color: #ffffff !important;
+}
+
+/*GHOST GREEN */
+.btn-ghost-green{
+    transition: 0.4s;
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #ffffff;
+    border: 1px solid #006500;
+    color: #006500;
+
+}
+
+.btn-ghost-green:hover, btn-ghost-green:focus{
+    /*min-width: 80px;*/
+    border-radius: 2px !important;
+    background-color: #006500;
+    border: 1px solid #ffffff;
+    color: #ffffff !important;
+}

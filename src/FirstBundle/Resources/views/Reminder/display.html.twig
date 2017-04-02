@@ -26,7 +26,11 @@
                         {% endif %}
 
                         <div id="bookmark-{{ x }}-{{ y }}" class="{{ css_class }}" >
-                            {% if shadow == false %}
+                            {% if shadow == true %}
+
+                                <div class="text-center plus-sign">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                </div>
 
                                 {#<div class="row">#}
                                     {#<div class="col-xs-1 col-md-offset-9">#}

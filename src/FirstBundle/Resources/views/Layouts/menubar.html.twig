@@ -10,41 +10,120 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <h1 ><a class="navbar-brand" href="{{ path('work_workset', {'id' : 1}) }}" style="color:#00ff00 !important;font-weight:bold;font-size:100%" >PREPROD V2</a></h1>
-                {#<a class="navbar-brand" href="{{ path('work_workset', {'id' : 1}) }}">SuperBrute V2</a>#}
+                {#<h1 >#}
+                    {#<a class="navbar-brand" href="{{ path('work_workset', {'id' : 1}) }}" style="color:#00ff00 !important;font-weight:bold;font-size:100%" >#}
+                        {#<span class="glyphicon glyphicon-home"></span>#}
+                        {#PREPROD V2#}
+                    {#</a>#}
+                {#</h1>#}
+                <a class="navbar-brand" href="{{ path('work_workset', {'id' : 1}) }}">
+                    <span class="glyphicon glyphicon-home"></span>
+                    &nbsp;SuperBrute V2
+                </a>
             </div>
             <div id="w0-collapse" class="collapse navbar-collapse">
                 <ul id="w1" class="navbar-nav navbar-right nav">
                     {%  set mkb = "false" %}
-                    <li><a href="{{ path('auth') }}" >Auth</a></li>
-                    <li><a href="{{ path('stats_notes', {'workset_id' : 1}) }}" >TEST</a></li>
+
+
+                    <li>
+                        <a href="{{ path('stats_notes', {'workset_id' : 1}) }}" >
+                            {#TEST#}
+                            <small>
+                            <small>
+                                <b>
+                                <b>
+                                    /20
+                                </b>
+                                </b>
+                            </small>
+                            </small>
+                            &nbsp;Notes
+                        </a>
+                    </li>
                     {#<li><a href="{{ path('create_tour') }}" >Créer Nouveau Tour</a></li>#}
-                    <li><a href="{{ path('reminders_display', {'workset_id' : 1}) }}" >Pense-Bêtes</a></li>
+                    <li>
+                        <a href="{{ path('reminders_display', {'workset_id' : 1}) }}" >
+                            {#Pense-Bêtes#}
+                            <span class="glyphicon glyphicon-edit"></span>
+                            &nbsp;Pense Bêtes
+                        </a>
+                    </li>
                     <li class="dropdown">
-                        <a class="darkbar dropdown-toggle" href="#" data-toggle="dropdown">Statistiques <b class="caret"></b></a>
+                        <a class="darkbar dropdown-toggle" href="#" data-toggle="dropdown">
+                            {#Statistiques #}
+                            <span class="glyphicon glyphicon-equalizer"></span>
+                            &nbsp; Stats
+                            <b class="caret"></b>
+                        </a>
                         <ul id="w2" class="dropdown-menu">
                             {%  set mkb = "false" %}
-                            <li><a class="darkbar dark" href="{{ path('stats_avancement', {'workset_id' : 1, 'mikbook' : mkb }) }}" tabindex="-1">Avancement</a></li>
+                            <li>
+                                <a class="darkbar dark" href="{{ path('stats_avancement', {'workset_id' : 1, 'mikbook' : mkb }) }}" tabindex="-1">
+                                    <span class="glyphicon glyphicon-equalizer"></span>
+                                    &nbsp;Avancement
+                                </a>
+                            </li>
                             <li class="divider darkbar"></li>
-                            <li><a class="darkbar dark" href="{{ path('stats_tour', {'workset_id' : 1}) }}" tabindex="-1">Tours</a></li>
-                            <li class="divider darkbar"></li>
-                            <li><a class="darkbar dark" href="#" tabindex="-1">Cas</a></li>
+                            <li>
+                                <a class="darkbar dark" href="{{ path('stats_tour', {'workset_id' : 1}) }}" tabindex="-1">
+                                    <span class="glyphicon glyphicon-equalizer"></span>
+                                    &nbsp;Tours
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                    <li class="dropdown"><a class="darkbar dropdown-toggle" href="#" data-toggle="dropdown">Admin <b class="caret"></b></a>
+                    <li class="dropdown">
+                        <a class="darkbar dropdown-toggle" href="#" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            &nbsp;Admin
+                            <b class="caret"></b>
+                        </a>
                         <ul id="w3" class="dropdown-menu">
-                            <li><a class="dark" href="{{ path('list_workset') }}" >Worksets</a></li>
+                            <li>
+                                <a class="dark" href="{{ path('list_workset') }}" >
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    &nbsp;Worksets
+                                </a>
+                            </li>
                                 <li class="divider darkbar"></li>
-                            <li><a class="dark" href="{{ path('list_field') }}" >Fields</a></li>
+                            <li>
+                                <a class="dark" href="{{ path('list_field') }}" >
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    &nbsp;Fields
+                                </a>
+                            </li>
                                 <li class="divider darkbar"></li>
-                            <li><a class="dark" href="{{ path('list_item') }}" >Items</a></li>
+                            <li>
+                                <a class="dark" href="{{ path('list_item') }}" >
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    &nbsp;Items
+                                </a>
+                            </li>
                                 <li class="divider darkbar"></li>
-                            <li><a class="dark" href="{{ path('create_tour') }}" >Créer Nouveau Tour</a></li>
+                            <li>
+                                <a class="dark" href="{{ path('create_tour') }}" >
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    &nbsp;Créer Nouveau Tour
+                                </a>
+                            </li>
                                 <li class="divider darkbar"></li>
-                            <li><a class="dark" href="{{ path('delete_all_tours') }}" >Supprimer tous les tours</a></li>
+                            <li>
+                                <a class="dark" href="{{ path('delete_all_tours') }}" >
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    &nbsp;Supprimer tous les tours
+                                </a>
+                            </li>
 
                         </ul>
-                    </li>#}
+                    </li>
+
+                    <li><a href="{{ path('auth') }}" >
+                            {#Auth#}
+                            <span class="glyphicon glyphicon-user"></span>
+                            &nbsp; Connection
+                        </a>
+                    </li>
                     <li><a href="{{ path('logout') }}" data-method="post">Logout (Sophie)</a></li>
                 </ul>
             </div>

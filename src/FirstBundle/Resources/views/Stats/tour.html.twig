@@ -52,31 +52,43 @@
         <hr>
         {# Affichage des stats pour chaque matière #}
         <div class="row">
-            <h2>Matières</h2>
+            <div class="panel-custom">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                        <h2>Matières</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-11 col-md-11">
+                            {% for id, field in stats.fields_stats %}
+                                <div class="row">
+                                    <div class="col-xs-2 col-md-2">
+                                        <b>
+                                            &nbsp;&nbsp;{{ field.field_name | slice(0,13) }}
+                                        </b>
+                                    </div>
+                                    <div class="col-xs-10 col-md-10">
+                                        <div class="progress-field shadow-box" style="background-color:white">
+                                            {#<div id="progress-field-{{ id }}"  style="width:{{ field.percentage }}%;background-color:{{ field.color }}">#}
+                                            <div id="progress-field-{{ id }}" class="transition" style="width:0%;background-color:{{ field.color }}">
+                                                <div id="percentage-field-{{ id }}" class="text-center percentage">
+                                                    {{ field.percentage }}
+                                                </div>
 
-            <div class="col-xs-11 col-md-11">
-                    {% for id, field in stats.fields_stats %}
-                        <div class="row">
-                            <div class="col-xs-2 col-md-2">
-                                <b>
-                                    {{ field.field_name }}
-                                </b>
-                            </div>
-                            <div class="col-xs-10 col-md-10">
-                                <div class=" shadow-box" style="background-color:white">
-                                    {#<div id="progress-field-{{ id }}"  style="width:{{ field.percentage }}%;background-color:{{ field.color }}">#}
-                                    <div id="progress-field-{{ id }}" class="transition" style="width:0%;background-color:{{ field.color }}">
-                                        <div id="percentage-field-{{ id }}" class="text-center">
-                                            {{ field.percentage }}
+                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
+                    </div>
+
+                    <hr>
+
             </div>
         </div>
+
+
 
 
     </div>

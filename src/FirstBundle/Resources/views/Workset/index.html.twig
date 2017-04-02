@@ -20,9 +20,9 @@
 
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="panel-custom col-md-12">
             
-            <div class="table-responsive table list">
+            <div class="table-responsive table">
                 
 {#                LISTE DES WORKSET (TABLEAU)#}
                 
@@ -59,16 +59,19 @@
                                 {{ workset.description }}
                             </td>
                             <td>
-                                <a href="{{ path('view_workset', {'id': workset.id }) }}">
-                                    <span class="glyphicon glyphicon-cog"></span>
-                                </a>
-                                <a href="{{ path('edit_workset', {'id': workset.id }) }}">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </a>
-                                <a href="{{ path('delete_workset', {'id': workset.id }) }}">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                            </td>        
+                                <div class="btn-group">
+
+                                    <btn href="{{ path('view_workset', {'id': workset.id }) }}" class="btn btn-ghost-darkblue">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                    </btn>
+                                    <btn href="{{ path('edit_workset', {'id': workset.id }) }}" class="btn btn-ghost-orange">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </btn>
+                                    <btn href="{{ path('delete_workset', {'id': workset.id }) }}" class="btn btn-ghost-blood">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </btn>
+                                </div>
+                            </td>
               
                         </tr>
                     {% else %}
@@ -79,8 +82,9 @@
             </div>
             <div class="col-md-1 col-md-offset-11">
                 <a href="{{ path('create_workset') }}">
-                    <button type="button" class="btn btn-custom">
-                        <span class="glyphicon glyphicon-plus"></span>                            
+                    <button type="button" class="btn btn-ghost-green">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        &nbsp; Nouveau
                     </button>
                 </a>
             </div>

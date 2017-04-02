@@ -10,10 +10,9 @@
     border-radius: 2px;
 }
 
-.transition{
-    transition: 0.5s;
+.progress-field{
+    margin-top: 1px;
 }
-
 
 div.field-progress-bar-container{
     z-index: -1;
@@ -30,4 +29,10 @@ div.field-progress-bar{
     left: 0;
     height:40px;
     border:1px solid black;
+}
+
+.percentage{
+    opacity:0.6;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }

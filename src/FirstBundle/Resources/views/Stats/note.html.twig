@@ -29,13 +29,14 @@
                                 <label for="type">Type</label>
                             </div>
                             <div class="col-xs-6">
-                                <select id="type" name="type">
+                                <select id="type" name="type" class="form-control">
                                     <option value="cas">Dossier Clinique</option>
                                     <option value="qi">Questions Isolées</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <hr>
                     <div class="row">
 
                         <div class="form-group">
@@ -43,7 +44,7 @@
                                 <label for="note">Note (/20)</label>
                             </div>
                             <div class="col-xs-6">
-                                <input type="number" id="note" />
+                                <input type="number" id="note" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -54,7 +55,7 @@
                                 <label for="note">Matière</label>
                             </div>
                             <div class="col-xs-6">
-                                <select id="field">
+                                <select id="field" class="form-control">
                                     {% for field in fields %}
                                         <option value="{{ field.id }}">{{ field.name }}</option>
                                     {% endfor %}
@@ -66,7 +67,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-xs-6 col-xs-offset-6">
-                                <button id="mark-note" class="btn btn-custom" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                <button id="mark-note" class="btn btn-ghost-green" ><span class="glyphicon glyphicon-pencil"></span>&nbsp;Ok</button>
                             </div>
                         </div>
                     </div>
