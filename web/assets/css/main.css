@@ -1,6 +1,54 @@
 
 /* Classes générales */
 
+.btn {
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -ms-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+    background-color: white;
+
+}
+.btn:hover {
+    background-color: #0a0a0a;
+ }
+
+body.side-menu-active{
+
+    position: fixed;
+    left: 250px;        /* ici media query pour gérer le 19" */
+    bottom:0px;
+    top: 130px; /* top menu */
+    right: 0px;
+
+}
+
+ /* classe a appliquer sur le menu FERME */
+body .side-menu-class-closed{
+
+    position:fixed;
+    width:250px;
+    left: -250px;
+    bottom:0;
+    top: 130px; /* top menu */
+
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -ms-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+}
+
+/* classe a appliquer sur le menu OUVERT */
+body.side-menu-active .side-menu-class-opened{
+
+    position:fixed;
+    right: calc(100% - 250px) ;
+    left: 0px;
+    top: 130px; /* top menu */
+}
+
 .wrap{
     background-color: #d3e1ed;
 }
