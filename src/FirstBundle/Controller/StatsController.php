@@ -145,6 +145,9 @@ class StatsController extends AbstractController {
             return $response;
         }
         else{
+
+//            dump($stats);die;
+
             return $this->render('FirstBundle:Stats:tour.html.twig', array(
                 'workset_id'    => $workset_id,
                 'iteration'     => $iteration,

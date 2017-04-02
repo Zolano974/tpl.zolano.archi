@@ -53,38 +53,33 @@
         {# Affichage des stats pour chaque matière #}
         <div class="row">
             <h2>Matières</h2>
+
+            <div class="col-xs-11 col-md-11">
+                    {% for id, field in stats.fields_stats %}
+                        <div class="row">
+                            <div class="col-xs-2 col-md-2">
+                                <b>
+                                    {{ field.field_name }}
+                                </b>
+                            </div>
+                            <div class="col-xs-10 col-md-10">
+                                <div class=" shadow-box" style="background-color:white">
+                                    {#<div id="progress-field-{{ id }}"  style="width:{{ field.percentage }}%;background-color:{{ field.color }}">#}
+                                    <div id="progress-field-{{ id }}" class="transition" style="width:0%;background-color:{{ field.color }}">
+                                        <div id="percentage-field-{{ id }}" class="text-center">
+                                            {{ field.percentage }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
         </div>
 
-        {% for id, field in stats.fields_stats %}
-
-            <div class="col-xs-3">
-                <div class="row">
-                    <br>
-                    <b><center><big>{{ field.field_name }}</big>(<span id="{{ id }}-items_percentage">{{ field.percentage }}</span>%)</center></b>
-                </div>
-                <div class="row">
-                    {#<div class="stats-square">#}
-                        {#Total : <span id="{{ id }}-items_global">{{ field.items_global }}</span>#}
-                        {#<br>#}
-                        {#Terminés : <span id="{{ id }}-items_done">{{ field.items_done }}</span>#}
-                        {#<br>#}
-
-
-                        <div id="piechart-field-{{ id }}" class="piechartdiv" >
-
-                        </div>
-
-                    {#</div>#}
-                </div>
-            </div>
-
-        {% endfor %}
 
     </div>
-
-
-
-
 
 
 {% endblock  %}
@@ -98,87 +93,33 @@
 
     var old_iteration = {{ iteration }};
 
+    var generateProgression = function(stats){
+
+        //pour chaque matière
+        for(var id in stats){
+
+            var field = stats[id];
+
+            //on récupère la couleur et l'avancement
+            var percentage = field.percentage;
+            var color = field.color;
+
+            //on met à jour le remplissage de la barre de progression
+            $("#progress-field-" + id).attr("style", "width:"+percentage+"%; background-color:"+color);
+
+            //on maj le pourcentage écrit
+            $("#percentage-field-"+ id).html(percentage);
+        }
+    };
+
     $(document).ready(function(){
 //            alert("nikoumouk");
 
         var stats = {{ stats.fields_stats | json_encode | raw }};
 
-        pie_charts = generatePieCharts(stats);
+        generateProgression(stats);
 
     });
-
-    function generatePieCharts(stats){
-
-        var charts = [];
-
-        for(var id in stats){
-
-            var field = stats[id];
-
-            console.log(field);
-
-            var percentage_done = field.percentage;
-            var percentage_undone = 100 - percentage_done;
-
-            var params = generatePieParams(percentage_done, percentage_undone, field.color);
-
-            var html_id = "piechart-field-" + id;
-
-            $("#"+html_id).html("");
-            var chart_pie = AmCharts.makeChart(html_id, params);
-
-            chart_pie.validateData();
-
-            charts[id] = chart_pie;
-
-        }
-
-        return charts;
-
-    }
-
-
-    //génère l'objet de configuration du PIE CHART
-    function generatePieParams(done, undone, color){
-
-        console.log("color : " + color);
-
-        var pie_params =    {
-
-            "type": "pie",
-            "balloonText": " <b>[[title]]</b><br>([[percents]]%)</span>",
-//                    "sequencedAnimation": true,
-            "labelText": "",
-            "titleField": "label",
-            "valueField": "percent",
-            "colorField": "color",
-            "fontFamily": "Arial",
-            "fontSize": 12,
-            "dataProvider": generatePieData(done, undone, color)
-        };
-
-        return pie_params;
-
-    }
-
-    //92700441c55096de7b154c1eb4c74b53ba25264f2580df4d846c995ce2ec7eb3
-
-    //genère la partie DATA de la configuration du graphe
-    function generatePieData(done, undone, color){
-        return [
-            {
-                "label": "Terminés",
-                "percent": done,
-                "color" : color
-            }
-            ,
-            {
-                "label": "A Finir",
-                "percent": undone,
-                "color": "#ffffff"
-            }
-        ];
-    }
 
     //on appelle en ajax les données pour le nouveau tour selecionné et on génère les graphes a nouveau
     function loadTour(iteration){
@@ -224,24 +165,7 @@
 
             var fieldstats = data.stats.fields_stats;
 
-            //maj des graphes & valeurs pour chaque field
-            for(var field_id in fieldstats ){
-
-                var field = fieldstats[field_id];
-                //maj du %
-                $("#" + field_id + "-items_percentage").html(field.percentage);
-                var done = field.percentage;
-                var undone = 100 - done;
-                //génération des nouvelles données du graphe
-                var newData = generatePieData(done, undone, field.color);
-                //maj du graphe avec les nouvelles données
-                pie_charts[field_id].dataProvider = newData;
-                pie_charts[field_id].validateData();
-//                pie_charts[field_id].animateAgain();
-            }
-
-
-
+            generateProgression(fieldstats);
         });
 
     }
