@@ -263,7 +263,7 @@ class StatsRepository{
 
         //on assure les valeurs de BEGIN et END
         $date = date("Y-m-d",mktime(0,0,0,date("m"), date("d")+2, date("Y")));
-        $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")-15, date("Y")));
+        $last_month = date("Y-m-d",mktime(0,0,0,date("m"), date("d")-40, date("Y")));
 
         //si les dates ne sont pas renseignées, on met les bornes par défaut (de ya un mois à AJD)
         if($begin === null){ $begin = $last_month; }
