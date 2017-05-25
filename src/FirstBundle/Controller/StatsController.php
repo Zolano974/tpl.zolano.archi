@@ -30,8 +30,20 @@ class StatsController extends AbstractController {
         $request = Request::createFromGlobals();
 
 //        $begin_date = $request->request->get('begin_date', '2017-01-01');
-        $begin_date = $request->request->get('begin_date', null);
-        $end_date = $request->request->get('end_date', null);
+        $begin_date = $request->query->get('begin', null);
+        $end_date = $request->query->get('end', null);
+
+        if($begin_date !== null)
+            $_SESSION['begin'] = $begin_date;
+        else
+            $begin_date = (isset($_SESSION['begin'])) ? $_SESSION['begin'] : null;
+
+        if($end_date !== null)
+            $_SESSION['end'] = $end_date;
+        else
+            $end_date = (isset($_SESSION['end'])) ? $_SESSION['end'] : null;
+
+//        dump($begin_date,$end_date);die;//92700441c55096de7b154c1eb4c74b53ba25264f2580df4d846c995ce2ec7eb3
 
         $workset = $this->getDoctrine()
             ->getManager()
@@ -75,6 +87,9 @@ class StatsController extends AbstractController {
             //stats
             'chart_data_note'      =>$data_notes['chart_data'],
             'chart_params_note'    =>$data_notes['chart_params'],
+            //dates
+            'begin'                => ($begin_date !== null) ? $begin_date : false,
+            'end'                  => ($end_date !== null) ? $end_date : false,
         ));
 
     }
