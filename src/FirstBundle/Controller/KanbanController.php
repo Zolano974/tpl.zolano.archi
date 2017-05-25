@@ -121,7 +121,8 @@ class KanbanController extends AbstractController
             $item->step = $row['step'];
             $item->number = $row['number'];
 
-            $output[$item->step][] = $item;
+            if(!in_array($item, $output[$item->step]))
+                $output[$item->step][] = $item;
             
         }
         
